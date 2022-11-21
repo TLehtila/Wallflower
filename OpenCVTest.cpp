@@ -12,6 +12,15 @@
 using namespace std;
 using namespace cv;
 
+void getContours(Mat img, Mat imgResult) {
+
+    vector<vector<Point>> contours = { {} };
+    vector<Vec4i> hierarchy;
+
+    findContours(img, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+    drawContours(imgResult, contours, -1, Scalar(150, 50, 0), 2);
+}
+
 int main()
 {
     cout << "OpenCV version is " << CV_VERSION << endl;
@@ -64,70 +73,70 @@ int main()
         waitKey(1);
     }
     */
-    float screenWidth = 500;
-    float screenHeight = 500;
+    //float screenWidth = 500;
+    //float screenHeight = 500;
 
-    Mat screenImg(screenWidth, screenHeight, CV_8UC3, Scalar(0, 0, 0));
+    //Mat screenImg(screenWidth, screenHeight, CV_8UC3, Scalar(0, 0, 0));
 
-    Point2f corners[4] = { {10, 10}, {screenWidth - 10, 10}, {10, screenHeight - 10}, {screenWidth - 10, screenHeight - 10} };
-    for (int i = 0; i < 4; i++) {
-        circle(screenImg, corners[i], 50, Scalar(255, 255, 255), FILLED);
-    }
+    //Point2f corners[4] = { {10, 10}, {screenWidth - 10, 10}, {10, screenHeight - 10}, {screenWidth - 10, screenHeight - 10} };
+    //for (int i = 0; i < 4; i++) {
+    //    circle(screenImg, corners[i], 50, Scalar(255, 255, 255), FILLED);
+    //}
 
-    namedWindow("window", WND_PROP_FULLSCREEN);
-    setWindowProperty("window", WND_PROP_FULLSCREEN, WINDOW_FULLSCREEN);
-    imshow("window", screenImg);
-    Mat imgHSV, mask;
-    int hmin, smin, vmin;
-    int hmax, smax, vmax;
+    //namedWindow("window", WND_PROP_FULLSCREEN);
+    //setWindowProperty("window", WND_PROP_FULLSCREEN, WINDOW_FULLSCREEN);
+    //imshow("window", screenImg);
+    //Mat imgHSV, mask;
+    //int hmin, smin, vmin;
+    //int hmax, smax, vmax;
    
-    namedWindow("trackbars", (640, 200));
-    createTrackbar("hue min", "trackbars", &hmin, 179);
-    createTrackbar("hue max", "trackbars", &hmax, 179);
-    createTrackbar("sat min", "trackbars", &smin, 255);
-    createTrackbar("sat max", "trackbars", &smax, 255);
-    createTrackbar("val min", "trackbars", &vmin, 255);
-    createTrackbar("val max", "trackbars", &vmax, 255);
-    moveWindow("trackbars", 3000, 500);
+    //namedWindow("trackbars", (640, 200));
+    //createTrackbar("hue min", "trackbars", &hmin, 179);
+    //createTrackbar("hue max", "trackbars", &hmax, 179);
+    //createTrackbar("sat min", "trackbars", &smin, 255);
+    //createTrackbar("sat max", "trackbars", &smax, 255);
+    //createTrackbar("val min", "trackbars", &vmin, 255);
+    //createTrackbar("val max", "trackbars", &vmax, 255);
+    //moveWindow("trackbars", 3000, 500);
 
-    namedWindow("Image mask");
-    moveWindow("Image mask", 3250, 500);
+    //namedWindow("Image mask");
+    //moveWindow("Image mask", 3250, 500);
 
-    namedWindow("video hsv");
-    moveWindow("video hsv", 3250, 100);
+    //namedWindow("video hsv");
+    //moveWindow("video hsv", 3250, 100);
 
 
     //cvtColor(screenImg, imgHSV, COLOR_BGR2HSV);
 
-    Mat frameOne, frameTwo;
+    //Mat frameOne, frameTwo;
 
-    while (true) {
+    //while (true) {
 
 
 
-        //imshow("Image", screenImg);
-        //imshow("Image HSV", imgHSV);
+    //    //imshow("Image", screenImg);
+    //    //imshow("Image HSV", imgHSV);
 
-        VideoCapture capOne(0);
-        //VideoCapture capTwo(1);
+    //    VideoCapture capOne(0);
+    //    //VideoCapture capTwo(1);
 
-        capOne >> frameOne;
-        //capTwo >> frameTwo;
-        cvtColor(frameOne, imgHSV, COLOR_BGR2HSV);
+    //    capOne >> frameOne;
+    //    //capTwo >> frameTwo;
+    //    //cvtColor(frameOne, imgHSV, COLOR_BGR2HSV);
 
-        Scalar lower(hmin, smin, vmin);
-        Scalar upper(hmax, smax, vmax);
-        inRange(imgHSV, lower, upper, mask);
+    //    //Scalar lower(hmin, smin, vmin);
+    //    //Scalar upper(hmax, smax, vmax);
+    //    //inRange(imgHSV, lower, upper, mask);
 
-        imshow("video hsv", imgHSV);
-        imshow("Image mask", mask);
+    //    //imshow("video hsv", imgHSV);
+    //    //imshow("Image mask", mask);
 
-        int keyboard = waitKey(30);
-        if (keyboard == 'q' || keyboard == 27) {
-            break;
-        }
+    //    int keyboard = waitKey(30);
+    //    if (keyboard == 'q' || keyboard == 27) {
+    //        break;
+    //    }
 
-    }
+    //}
 
     //// VideoCapture cap(camera id = 0->)
     //VideoCapture capOne(0);
@@ -190,6 +199,25 @@ int main()
         waitKey(1);
     }
     */
+
+    string path = "Resources/flower1.jpg";
+    Mat img = imread(path);
+    Mat imgGray, imgBlur, imgCanny, imgDilation, imgErosion, imgResized, imgCrop;
+
+    cvtColor(img, imgGray, COLOR_BGR2GRAY);
+    GaussianBlur(imgGray, imgBlur, Size(3, 3), 5, 0);
+    Canny(imgBlur, imgCanny, 50, 150);
+    Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+    dilate(imgCanny, imgDilation, kernel);
+    Mat imgContour;
+
+    getContours(imgDilation, imgContour);
+
+    imshow("contoured", imgContour);
+
+    //imshow("effects", imgDilation);
+
+
     waitKey(0);
 
 
