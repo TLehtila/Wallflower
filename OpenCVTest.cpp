@@ -12,16 +12,15 @@
 using namespace std;
 using namespace cv;
 
-int* getContours(Mat img, Mat imgResult) {
-    static int coordinates[2];
-    coordinates[0] = 0;
-    coordinates[1] = 0;
+Point2f getContours(Mat img, Mat imgResult) {
+    Point2f coordinates;
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
 
     findContours(img, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
     //drawContours(imgResult, contours, -1, Scalar(150, 50, 0), 5);
 
+    //Point corner;
     vector<vector<Point>> contourPoly(contours.size());
     vector<Rect> boundRectangle(contours.size());
 
@@ -35,6 +34,7 @@ int* getContours(Mat img, Mat imgResult) {
             cout << contourPoly[i].size() << endl;
             boundRectangle[i] = boundingRect(contourPoly[i]);
             rectangle(imgResult, boundRectangle[i].tl(), boundRectangle[i].br(), Scalar(255, 255, 255), 5);
+            coordinates = boundRectangle[i].br();
 
         }
     }
@@ -189,7 +189,7 @@ int main()
         circle(frameOne, sourcePointsOne[i], 10, Scalar(0, 0, 255), FILLED);
     }
     */
-    int* ptr;
+    Point2f touchPoint;
 
     Rect emptyScreen(0, 0, capOneHeight, capOneWidth);
 
@@ -212,9 +212,11 @@ int main()
 
         imshow("canny", cannyOne);
 
+
+        touchPoint = getContours(fgMaskOne, contoursOne);
         rectangle(contoursOne, emptyScreen, Scalar(0, 0, 0), FILLED);
 
-        ptr = getContours(fgMaskOne, contoursOne);
+        circle(contoursOne, touchPoint, 10, Scalar(255, 255, 255), FILLED);
 
         imshow("contours", contoursOne);
         //imshow("FG Mask One", fgMaskOne);
