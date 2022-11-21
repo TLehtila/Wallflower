@@ -12,13 +12,33 @@
 using namespace std;
 using namespace cv;
 
-void getContours(Mat img, Mat imgResult) {
-
-    vector<vector<Point>> contours = { {} };
+int* getContours(Mat img, Mat imgResult) {
+    static int coordinates[2];
+    coordinates[0] = 0;
+    coordinates[1] = 0;
+    vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
 
     findContours(img, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
-    drawContours(imgResult, contours, -1, Scalar(150, 50, 0), 2);
+    //drawContours(imgResult, contours, -1, Scalar(150, 50, 0), 5);
+
+    vector<vector<Point>> contourPoly(contours.size());
+    vector<Rect> boundRectangle(contours.size());
+
+    for (int i = 0; i < contours.size(); i++) {
+        int area = contourArea(contours[i]);
+        if (area > 500) {
+            float perimeter = arcLength(contours[i], true);
+            approxPolyDP(contours[i], contourPoly[i], 0.02 * perimeter, true);
+            //drawContours(imgResult, contourPoly, i, Scalar(150, 50, 0), 5);
+
+            cout << contourPoly[i].size() << endl;
+            boundRectangle[i] = boundingRect(contourPoly[i]);
+            rectangle(imgResult, boundRectangle[i].tl(), boundRectangle[i].br(), Scalar(255, 255, 255), 5);
+
+        }
+    }
+    return coordinates;
 }
 
 int main()
@@ -138,15 +158,15 @@ int main()
 
     //}
 
-    //// VideoCapture cap(camera id = 0->)
-    //VideoCapture capOne(0);
-    //VideoCapture capTwo(1);
-    ////Mat img, imgBlur, imgCanny;
+    // VideoCapture cap(camera id = 0->)
+    VideoCapture capOne(1);
+    VideoCapture capTwo(1);
+    //Mat img, imgBlur, imgCanny;
 
-    //Ptr<BackgroundSubtractor> pBackSubOne;
-    //pBackSubOne = createBackgroundSubtractorMOG2();
-    //Ptr<BackgroundSubtractor> pBackSubTwo;
-    //pBackSubTwo = createBackgroundSubtractorMOG2();
+    Ptr<BackgroundSubtractor> pBackSubOne;
+    pBackSubOne = createBackgroundSubtractorMOG2();
+    Ptr<BackgroundSubtractor> pBackSubTwo;
+    pBackSubTwo = createBackgroundSubtractorMOG2();
 
     //Point2f sourcePointsOne[4] = { {130, 95}, {640, 0}, {60, 435}, {640, 480} };
     //Point2f sourcePointsTwo[4] = { {30, 90}, {625, 80}, {0, 360}, {640, 360} };
@@ -156,37 +176,57 @@ int main()
 
     //matrixOne = getPerspectiveTransform(sourcePointsOne, destPointsOne);
     //matrixTwo = getPerspectiveTransform(sourcePointsTwo, destPointsTwo);
+    Mat frame;
+    capOne >> frame;
+    int capOneWidth = frame.size[0];
+    int capOneHeight = frame.size[1];
+    Mat frameOne, fgMaskOne, frameBlurOne, frameTwo, fgMaskTwo, frameBlurTwo;
+    Mat cannyOne, cannyTwo;
+    Mat contoursOne(capOneWidth, capOneHeight, CV_8UC3, Scalar(0, 0, 0));
 
-    //Mat frameOne, fgMaskOne, frameBlurOne, frameTwo, fgMaskTwo, frameBlurTwo;
+    /*
+    for (int i = 0; i < 4; i++) {
+        circle(frameOne, sourcePointsOne[i], 10, Scalar(0, 0, 255), FILLED);
+    }
+    */
+    int* ptr;
 
-    //while (true) {
-    //    capOne >> frameOne;
-    //    capTwo >> frameTwo;
+    Rect emptyScreen(0, 0, capOneHeight, capOneWidth);
 
-    //    warpPerspective(frameOne, imgWarpOne, matrixOne, Point(640, 480));
-    //    warpPerspective(frameTwo, imgWarpTwo, matrixTwo, Point(640, 360));
+    while (true) {
+        capOne >> frameOne;
+        capTwo >> frameTwo;
+        
+        //warpPerspective(frameOne, imgWarpOne, matrixOne, Point(640, 480));
+        //warpPerspective(frameTwo, imgWarpTwo, matrixTwo, Point(640, 360));
 
+        GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
+        GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
 
-    //    for (int i = 0; i < 4; i++) {
-    //        circle(frameOne, sourcePointsOne[i], 10, Scalar(0, 0, 255), FILLED);
-    //    }
+        
+        pBackSubOne->apply(frameBlurOne, fgMaskOne, -1.0);
+        //pBackSubTwo->apply(frameBlurTwo, fgMaskTwo, -1.0);
 
-    //    //GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
-    //    //GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
-    //    //pBackSubOne->apply(frameBlurOne, fgMaskOne, -1.0);
-    //    //pBackSubTwo->apply(frameBlurTwo, fgMaskTwo, -1.0);
+        Canny(fgMaskOne, cannyOne, 50, 150);
+        //Canny(frameBlurTwo, cannyTwo, 50, 150);
 
-    //    //imshow("Frame", frame);
-    //    //imshow("FG Mask One", fgMaskOne);
-    //    //imshow("FG Mask Two", fgMaskTwo);
-    //    imshow("TEST IMAGE 1", imgWarpOne);
-    //    imshow("TEST IMAGE 2", frameOne);
+        imshow("canny", cannyOne);
 
-    //    int keyboard = waitKey(30);
-    //    if (keyboard == 'q' || keyboard == 27) {
-    //        break;
-    //    }
-    //}
+        rectangle(contoursOne, emptyScreen, Scalar(0, 0, 0), FILLED);
+
+        ptr = getContours(fgMaskOne, contoursOne);
+
+        imshow("contours", contoursOne);
+        //imshow("FG Mask One", fgMaskOne);
+        //imshow("FG Mask Two", fgMaskTwo);
+        //imshow("TEST IMAGE 1", imgWarpOne);
+        //imshow("TEST IMAGE 2", frameOne);
+
+        int keyboard = cv::waitKey(30);
+        if (keyboard == 'q' || keyboard == 27) {
+            break;
+        }
+    }
     
 
     /*
@@ -200,25 +240,27 @@ int main()
     }
     */
 
-    string path = "Resources/flower1.jpg";
-    Mat img = imread(path);
-    Mat imgGray, imgBlur, imgCanny, imgDilation, imgErosion, imgResized, imgCrop;
+    //string path = "Resources/flower1.jpg";
+    //Mat img = imread(path);
+    //Mat imgGray, imgBlur, imgCanny, imgDilation, imgErosion, imgResized, imgCrop;
 
-    cvtColor(img, imgGray, COLOR_BGR2GRAY);
-    GaussianBlur(imgGray, imgBlur, Size(3, 3), 5, 0);
-    Canny(imgBlur, imgCanny, 50, 150);
-    Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
-    dilate(imgCanny, imgDilation, kernel);
-    Mat imgContour;
+    //cvtColor(img, imgGray, COLOR_BGR2GRAY);
+    //GaussianBlur(imgGray, imgBlur, Size(3, 3), 5, 0);
+    //Canny(imgBlur, imgCanny, 50, 150);
+    //Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+    //dilate(imgCanny, imgDilation, kernel);
+    //Mat imgContour;
 
-    getContours(imgDilation, imgContour);
+    //getContours(imgDilation, img);
 
-    imshow("contoured", imgContour);
+    //imshow("contoured", img);
 
-    //imshow("effects", imgDilation);
+    //
+
+    ////imshow("effects", imgDilation);
 
 
-    waitKey(0);
+    //waitKey(0);
 
 
     return 0;
