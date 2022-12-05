@@ -41,9 +41,157 @@ Point2f getContours(Mat img, Mat imgResult) {
     return coordinates;
 }
 
+
+
+//Point pointKalman(Point input) {
+//    KalmanFilter KFOne(2, 1, 0);
+//    KFOne.transitionMatrix = (Mat_<float>(4, 4) << 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1);
+//    Mat_<float> measurement(2, 1);
+//    measurement.setTo(Scalar(0));
+//
+//    KFOne.statePre.at<float>(0) = input.x;
+//    KFOne.statePre.at<float>(1) = input.y;
+//    KFOne.statePre.at<float>(2) = 0;
+//    KFOne.statePre.at<float>(3) = 0;
+//
+//    setIdentity(KFOne.measurementMatrix);
+//    setIdentity(KFOne.processNoiseCov, Scalar::all(1e-4));
+//    setIdentity(KFOne.measurementNoiseCov, Scalar::all(1e-1));
+//    setIdentity(KFOne.errorCovPost, Scalar::all(.1));
+//
+//    Mat predictionOne = KFOne.predict();
+//    measurement(0) = input.x;
+//    measurement(1) = input.y;
+//    Mat estimated = KFOne.correct(measurement);
+//
+//    Point result(estimated.at<float>(0), estimated.at<float>(1));
+//
+//
+//
+//    return result;
+//}
+
+KalmanFilter KFOne;
+Mat_<float> measurementOne(2, 1);
+
+void initKalman(Point input, KalmanFilter KF, Mat_<float> measurement) {
+    
+    KF.init(4, 2, 0);
+
+    measurement.at<float>(0, 0) = input.x;
+    measurement.at<float>(0, 0) = input.y;
+
+    KF.statePre.setTo(0);
+    KF.statePre.at<float>(0, 0) = input.x;
+    KF.statePre.at<float>(1, 0) = input.y;
+
+    KF.statePost.setTo(0);
+    KF.statePost.at<float>(0, 0) = input.x;
+    KF.statePost.at<float>(1, 0) = input.y;
+
+    setIdentity(KF.transitionMatrix);
+    setIdentity(KF.measurementMatrix);
+    setIdentity(KF.processNoiseCov, Scalar::all(.005));         //faster -> more noise
+    setIdentity(KF.measurementNoiseCov, Scalar::all(1e-1));
+    setIdentity(KF.errorCovPost, Scalar::all(.1));
+}
+
+//https://stackoverflow.com/questions/18403918/opencv-kalman-filter-prediction-without-new-observtion/18407680
+//https://www.myzhar.com/blog/tutorials/tutorial-opencv-ball-tracker-using-kalman-filter/ 
+
+Point kalmanCorrect(Point input, KalmanFilter KF, Mat_<float> measurement) {
+    measurement(0) = input.x;
+    measurement(1) = input.y;
+
+    Mat estimated = KF.correct(measurement);
+    Point correctedPoint(estimated.at<float>(0), estimated.at<float>(1));
+    return correctedPoint;
+}
+
 int main()
 {
     cout << "OpenCV version is " << CV_VERSION << endl;
+
+
+    // VideoCapture cap(camera id = 0->)
+    VideoCapture capOne(1);
+    VideoCapture capTwo(1);
+    //Mat img, imgBlur, imgCanny;
+
+    Ptr<BackgroundSubtractor> pBackSubOne;
+    pBackSubOne = createBackgroundSubtractorMOG2();
+    Ptr<BackgroundSubtractor> pBackSubTwo;
+    pBackSubTwo = createBackgroundSubtractorMOG2();
+
+    //Point2f sourcePointsOne[4] = { {130, 95}, {640, 0}, {60, 435}, {640, 480} };
+    //Point2f sourcePointsTwo[4] = { {30, 90}, {625, 80}, {0, 360}, {640, 360} };
+    //Point2f destPointsOne[4] = { {0.0f, 0.0f}, {640, 0.0f}, {0.0f, 480}, {640, 480} };
+    //Point2f destPointsTwo[4] = { {0.0f, 0.0f}, {640, 0.0f}, {0.0f, 360}, {640, 360} };
+    //Mat matrixOne, matrixTwo, imgWarpOne, imgWarpTwo;
+
+    //matrixOne = getPerspectiveTransform(sourcePointsOne, destPointsOne);
+    //matrixTwo = getPerspectiveTransform(sourcePointsTwo, destPointsTwo);
+    Mat frame;
+    capOne >> frame;
+    int capOneWidth = frame.size[0];
+    int capOneHeight = frame.size[1];
+    Mat frameOne, fgMaskOne, frameBlurOne, frameTwo, fgMaskTwo, frameBlurTwo;
+    Mat cannyOne, cannyTwo;
+    Mat contoursOne(capOneWidth, capOneHeight, CV_8UC3, Scalar(0, 0, 0));
+
+    /*
+    for (int i = 0; i < 4; i++) {
+        circle(frameOne, sourcePointsOne[i], 10, Scalar(0, 0, 255), FILLED);
+    }
+    */
+    Point2f touchPoint;
+    Point2f correctedPoint;
+
+    Rect emptyScreen(0, 0, capOneHeight, capOneWidth);
+    touchPoint.x = 0;
+    touchPoint.y = 0;
+    initKalman(touchPoint, KFOne, measurementOne);
+
+    while (true) {
+        capOne >> frameOne;
+        //capTwo >> frameTwo;
+
+        //warpPerspective(frameOne, imgWarpOne, matrixOne, Point(640, 480));
+        //warpPerspective(frameTwo, imgWarpTwo, matrixTwo, Point(640, 360));
+
+        GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
+        //GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
+
+
+        pBackSubOne->apply(frameBlurOne, fgMaskOne, -1.0);
+        //pBackSubTwo->apply(frameBlurTwo, fgMaskTwo, -1.0);
+
+        Canny(fgMaskOne, cannyOne, 50, 150);
+        //Canny(frameBlurTwo, cannyTwo, 50, 150);
+
+        imshow("canny", cannyOne);
+
+
+        touchPoint = getContours(fgMaskOne, contoursOne);
+        correctedPoint = kalmanCorrect(touchPoint, KFOne, measurementOne);
+
+        rectangle(contoursOne, emptyScreen, Scalar(0, 0, 0), FILLED);
+
+        circle(contoursOne, correctedPoint, 10, Scalar(255, 255, 255), FILLED);
+
+        imshow("contours", contoursOne);
+        //imshow("FG Mask One", fgMaskOne);
+        //imshow("FG Mask Two", fgMaskTwo);
+        //imshow("TEST IMAGE 1", imgWarpOne);
+        //imshow("TEST IMAGE 2", frameOne);
+
+        int keyboard = cv::waitKey(30);
+        if (keyboard == 'q' || keyboard == 27) {
+            break;
+        }
+    }
+
+
 
     /*
     string path = "Resources/flower1.jpg";
@@ -158,78 +306,6 @@ int main()
 
     //}
 
-    // VideoCapture cap(camera id = 0->)
-    VideoCapture capOne(1);
-    VideoCapture capTwo(1);
-    //Mat img, imgBlur, imgCanny;
-
-    Ptr<BackgroundSubtractor> pBackSubOne;
-    pBackSubOne = createBackgroundSubtractorMOG2();
-    Ptr<BackgroundSubtractor> pBackSubTwo;
-    pBackSubTwo = createBackgroundSubtractorMOG2();
-
-    //Point2f sourcePointsOne[4] = { {130, 95}, {640, 0}, {60, 435}, {640, 480} };
-    //Point2f sourcePointsTwo[4] = { {30, 90}, {625, 80}, {0, 360}, {640, 360} };
-    //Point2f destPointsOne[4] = { {0.0f, 0.0f}, {640, 0.0f}, {0.0f, 480}, {640, 480} };
-    //Point2f destPointsTwo[4] = { {0.0f, 0.0f}, {640, 0.0f}, {0.0f, 360}, {640, 360} };
-    //Mat matrixOne, matrixTwo, imgWarpOne, imgWarpTwo;
-
-    //matrixOne = getPerspectiveTransform(sourcePointsOne, destPointsOne);
-    //matrixTwo = getPerspectiveTransform(sourcePointsTwo, destPointsTwo);
-    Mat frame;
-    capOne >> frame;
-    int capOneWidth = frame.size[0];
-    int capOneHeight = frame.size[1];
-    Mat frameOne, fgMaskOne, frameBlurOne, frameTwo, fgMaskTwo, frameBlurTwo;
-    Mat cannyOne, cannyTwo;
-    Mat contoursOne(capOneWidth, capOneHeight, CV_8UC3, Scalar(0, 0, 0));
-
-    /*
-    for (int i = 0; i < 4; i++) {
-        circle(frameOne, sourcePointsOne[i], 10, Scalar(0, 0, 255), FILLED);
-    }
-    */
-    Point2f touchPoint;
-
-    Rect emptyScreen(0, 0, capOneHeight, capOneWidth);
-
-    while (true) {
-        capOne >> frameOne;
-        capTwo >> frameTwo;
-        
-        //warpPerspective(frameOne, imgWarpOne, matrixOne, Point(640, 480));
-        //warpPerspective(frameTwo, imgWarpTwo, matrixTwo, Point(640, 360));
-
-        GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
-        GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
-
-        
-        pBackSubOne->apply(frameBlurOne, fgMaskOne, -1.0);
-        //pBackSubTwo->apply(frameBlurTwo, fgMaskTwo, -1.0);
-
-        Canny(fgMaskOne, cannyOne, 50, 150);
-        //Canny(frameBlurTwo, cannyTwo, 50, 150);
-
-        imshow("canny", cannyOne);
-
-
-        touchPoint = getContours(fgMaskOne, contoursOne);
-        rectangle(contoursOne, emptyScreen, Scalar(0, 0, 0), FILLED);
-
-        circle(contoursOne, touchPoint, 10, Scalar(255, 255, 255), FILLED);
-
-        imshow("contours", contoursOne);
-        //imshow("FG Mask One", fgMaskOne);
-        //imshow("FG Mask Two", fgMaskTwo);
-        //imshow("TEST IMAGE 1", imgWarpOne);
-        //imshow("TEST IMAGE 2", frameOne);
-
-        int keyboard = cv::waitKey(30);
-        if (keyboard == 'q' || keyboard == 27) {
-            break;
-        }
-    }
-    
 
     /*
     while (true) {
