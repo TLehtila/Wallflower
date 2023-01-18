@@ -31,7 +31,6 @@ Point2f getContours(Mat img, Mat imgResult) {
             approxPolyDP(contours[i], contourPoly[i], 0.02 * perimeter, true);
             //drawContours(imgResult, contourPoly, i, Scalar(150, 50, 0), 5);
 
-            cout << contourPoly[i].size() << endl;
             boundRectangle[i] = boundingRect(contourPoly[i]);
             rectangle(imgResult, boundRectangle[i].tl(), boundRectangle[i].br(), Scalar(255, 255, 255), 5);
             coordinates = boundRectangle[i].br();
@@ -71,42 +70,91 @@ Point2f getContours(Mat img, Mat imgResult) {
 //    return result;
 //}
 
-KalmanFilter KFOne;
-Mat_<float> measurementOne(2, 1);
+//KalmanFilter KFOne;
+//Mat_<float> measurementOne(2, 1);
+//
+//void initKalman(Point input, KalmanFilter KF, Mat_<float> measurement) {
+//    
+//    KF.init(4, 2, 0);
+//
+//    measurement.at<float>(0, 0) = input.x;
+//    measurement.at<float>(0, 0) = input.y;
+//
+//    KF.statePre.setTo(0);
+//    KF.statePre.at<float>(0, 0) = input.x;
+//    KF.statePre.at<float>(1, 0) = input.y;
+//
+//    KF.statePost.setTo(0);
+//    KF.statePost.at<float>(0, 0) = input.x;
+//    KF.statePost.at<float>(1, 0) = input.y;
+//
+//    setIdentity(KF.transitionMatrix);
+//    setIdentity(KF.measurementMatrix);
+//    setIdentity(KF.processNoiseCov, Scalar::all(.005));         //faster -> more noise
+//    setIdentity(KF.measurementNoiseCov, Scalar::all(1e-1));
+//    setIdentity(KF.errorCovPost, Scalar::all(.1));
+//}
+//
+////https://stackoverflow.com/questions/18403918/opencv-kalman-filter-prediction-without-new-observtion/18407680
+////https://www.myzhar.com/blog/tutorials/tutorial-opencv-ball-tracker-using-kalman-filter/ 
+//
+//Point kalmanCorrect(Point input, KalmanFilter KF, Mat_<float> measurement) {
+//    measurement(0) = input.x;
+//    measurement(1) = input.y;
+//
+//    Mat estimated = KF.correct(measurement);
+//    Point correctedPoint(estimated.at<float>(0), estimated.at<float>(1));
+//    return correctedPoint;
+//}
 
-void initKalman(Point input, KalmanFilter KF, Mat_<float> measurement) {
-    
-    KF.init(4, 2, 0);
+//https://stackoverflow.com/a/50047253
+static const int maxHistory = 10;
+cv::Point2f lastPoint;
+float pointMaxTolerance;
+Point2f historyOne[maxHistory];
+Point2f historyTwo[maxHistory];
+int historyHead, historySize;
 
-    measurement.at<float>(0, 0) = input.x;
-    measurement.at<float>(0, 0) = input.y;
-
-    KF.statePre.setTo(0);
-    KF.statePre.at<float>(0, 0) = input.x;
-    KF.statePre.at<float>(1, 0) = input.y;
-
-    KF.statePost.setTo(0);
-    KF.statePost.at<float>(0, 0) = input.x;
-    KF.statePost.at<float>(1, 0) = input.y;
-
-    setIdentity(KF.transitionMatrix);
-    setIdentity(KF.measurementMatrix);
-    setIdentity(KF.processNoiseCov, Scalar::all(.005));         //faster -> more noise
-    setIdentity(KF.measurementNoiseCov, Scalar::all(1e-1));
-    setIdentity(KF.errorCovPost, Scalar::all(.1));
+void noiseFilterSmooth(float maxTolerance = 1.5f) {
+    historyHead = historySize = 0;
+    pointMaxTolerance = maxTolerance * maxTolerance;
+    lastPoint = Point2f(0.0f, 0.0f);
 }
 
-//https://stackoverflow.com/questions/18403918/opencv-kalman-filter-prediction-without-new-observtion/18407680
-//https://www.myzhar.com/blog/tutorials/tutorial-opencv-ball-tracker-using-kalman-filter/ 
+Point2f& getResult(Point2f history[]) {
+    float sumx = 0;
+    float sumy = 0;
+    for (int i = 0; i < historySize; i++) {
+        sumx += history[i].x;
+        sumy += history[i].y;
+    }
 
-Point kalmanCorrect(Point input, KalmanFilter KF, Mat_<float> measurement) {
-    measurement(0) = input.x;
-    measurement(1) = input.y;
+    lastPoint.x = sumx / historySize;
+    lastPoint.y = sumy / historySize;
 
-    Mat estimated = KF.correct(measurement);
-    Point correctedPoint(estimated.at<float>(0), estimated.at<float>(1));
-    return correctedPoint;
+    return lastPoint;
 }
+
+float pointDistance(Point2f& point1, Point2f& point2) {
+    float distancex = point1.x - point2.x;
+    float distancey = point1.y - point2.y;
+    return (distancex * distancex + distancey * distancey);
+}
+
+Point2f& updatePoint(Point2f& newPoint, Point2f history[]) {
+    float distance = pointDistance(lastPoint, newPoint);
+    if (distance > pointMaxTolerance) {
+        historyHead = historySize = 0;
+    }
+    history[historyHead] = newPoint;
+    historyHead = (historyHead + 1) % maxHistory;
+    if (historySize < maxHistory) {
+        historySize++;
+    }
+    Point2f point = getResult(history);
+    return point;
+}
+
 
 int main()
 {
@@ -114,7 +162,7 @@ int main()
 
 
     // VideoCapture cap(camera id = 0->)
-    VideoCapture capOne(1);
+    VideoCapture capOne(0);
     VideoCapture capTwo(1);
     //Mat img, imgBlur, imgCanny;
 
@@ -131,55 +179,70 @@ int main()
 
     //matrixOne = getPerspectiveTransform(sourcePointsOne, destPointsOne);
     //matrixTwo = getPerspectiveTransform(sourcePointsTwo, destPointsTwo);
-    Mat frame;
-    capOne >> frame;
-    int capOneWidth = frame.size[0];
-    int capOneHeight = frame.size[1];
-    Mat frameOne, fgMaskOne, frameBlurOne, frameTwo, fgMaskTwo, frameBlurTwo;
+    Mat frameOne;
+    capOne >> frameOne;
+    Mat frameTwo;
+    capOne >> frameTwo;
+    int capOneWidth = frameOne.size[0];
+    int capOneHeight = frameOne.size[1];
+    int capTwoWidth = frameTwo.size[0];
+    int capTwoHeight = frameTwo.size[1];
+    Mat fgMaskOne, frameBlurOne, fgMaskTwo, frameBlurTwo;
     Mat cannyOne, cannyTwo;
     Mat contoursOne(capOneWidth, capOneHeight, CV_8UC3, Scalar(0, 0, 0));
+    Mat contoursTwo(capTwoWidth, capTwoHeight, CV_8UC3, Scalar(0, 0, 0));
 
     /*
     for (int i = 0; i < 4; i++) {
         circle(frameOne, sourcePointsOne[i], 10, Scalar(0, 0, 255), FILLED);
     }
     */
-    Point2f touchPoint;
-    Point2f correctedPoint;
+    Point2f touchPointOne, touchPointTwo;
+    Point2f correctedPointOne, correctedPointTwo;
+    Point2f pointsTogether;
 
     Rect emptyScreen(0, 0, capOneHeight, capOneWidth);
-    touchPoint.x = 0;
-    touchPoint.y = 0;
-    initKalman(touchPoint, KFOne, measurementOne);
+    touchPointOne.x = 0;
+    touchPointOne.y = 0;
+    touchPointTwo.x = 0;
+    touchPointTwo.y = 0;
+    //initKalman(touchPoint, KFOne, measurementOne);
+
+    noiseFilterSmooth();
 
     while (true) {
         capOne >> frameOne;
-        //capTwo >> frameTwo;
+        capTwo >> frameTwo;
 
         //warpPerspective(frameOne, imgWarpOne, matrixOne, Point(640, 480));
         //warpPerspective(frameTwo, imgWarpTwo, matrixTwo, Point(640, 360));
 
         GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
-        //GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
+        GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
 
 
         pBackSubOne->apply(frameBlurOne, fgMaskOne, -1.0);
-        //pBackSubTwo->apply(frameBlurTwo, fgMaskTwo, -1.0);
+        pBackSubTwo->apply(frameBlurTwo, fgMaskTwo, -1.0);
 
         Canny(fgMaskOne, cannyOne, 50, 150);
-        //Canny(frameBlurTwo, cannyTwo, 50, 150);
-
-        imshow("canny", cannyOne);
+        Canny(fgMaskTwo, cannyTwo, 50, 150);
 
 
-        touchPoint = getContours(fgMaskOne, contoursOne);
-        correctedPoint = kalmanCorrect(touchPoint, KFOne, measurementOne);
+        touchPointOne = getContours(fgMaskOne, contoursOne);
+        touchPointTwo = getContours(fgMaskOne, contoursTwo);
+        correctedPointOne = updatePoint(touchPointOne, historyOne);
+        correctedPointTwo = updatePoint(touchPointTwo, historyTwo);
+
+        pointsTogether.x = correctedPointTwo.x;
+        pointsTogether.y = correctedPointOne.y;
 
         rectangle(contoursOne, emptyScreen, Scalar(0, 0, 0), FILLED);
 
-        circle(contoursOne, correctedPoint, 10, Scalar(255, 255, 255), FILLED);
+        circle(contoursOne, pointsTogether, 10, Scalar(255, 255, 255), FILLED);
 
-        imshow("contours", contoursOne);
+        imshow("point", contoursOne);
+        imshow("camera1", cannyOne);
+        imshow("camera2", cannyTwo);
         //imshow("FG Mask One", fgMaskOne);
         //imshow("FG Mask Two", fgMaskTwo);
         //imshow("TEST IMAGE 1", imgWarpOne);
