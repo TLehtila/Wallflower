@@ -26,7 +26,7 @@ Point2f getContours(Mat img, Mat imgResult) {
 
     for (int i = 0; i < contours.size(); i++) {
         int area = contourArea(contours[i]);
-        if (area > 500) {
+        if (area > 1000) {
             float perimeter = arcLength(contours[i], true);
             approxPolyDP(contours[i], contourPoly[i], 0.02 * perimeter, true);
             //drawContours(imgResult, contourPoly, i, Scalar(150, 50, 0), 5);
@@ -109,19 +109,21 @@ Point2f getContours(Mat img, Mat imgResult) {
 
 //https://stackoverflow.com/a/50047253
 static const int maxHistory = 10;
-cv::Point2f lastPoint;
+cv::Point2f lastPointOne;
+cv::Point2f lastPointTwo;
 float pointMaxTolerance;
 Point2f historyOne[maxHistory];
 Point2f historyTwo[maxHistory];
 int historyHead, historySize;
 
-void noiseFilterSmooth(float maxTolerance = 1.5f) {
+void noiseFilterSmooth(float maxTolerance = 5.5f) {
     historyHead = historySize = 0;
     pointMaxTolerance = maxTolerance * maxTolerance;
-    lastPoint = Point2f(0.0f, 0.0f);
+    lastPointOne = Point2f(0.0f, 0.0f);
+    lastPointTwo = Point2f(0.0f, 0.0f);
 }
 
-Point2f& getResult(Point2f history[]) {
+Point2f& getResult(Point2f history[], Point2f lastPoint) {
     float sumx = 0;
     float sumy = 0;
     for (int i = 0; i < historySize; i++) {
@@ -141,7 +143,7 @@ float pointDistance(Point2f& point1, Point2f& point2) {
     return (distancex * distancex + distancey * distancey);
 }
 
-Point2f& updatePoint(Point2f& newPoint, Point2f history[]) {
+Point2f& updatePoint(Point2f& newPoint, Point2f history[], Point2f lastPoint) {
     float distance = pointDistance(lastPoint, newPoint);
     if (distance > pointMaxTolerance) {
         historyHead = historySize = 0;
@@ -151,7 +153,7 @@ Point2f& updatePoint(Point2f& newPoint, Point2f history[]) {
     if (historySize < maxHistory) {
         historySize++;
     }
-    Point2f point = getResult(history);
+    Point2f point = getResult(history, lastPoint);
     return point;
 }
 
@@ -182,15 +184,21 @@ int main()
     Mat frameOne;
     capOne >> frameOne;
     Mat frameTwo;
-    capOne >> frameTwo;
-    int capOneWidth = frameOne.size[0];
-    int capOneHeight = frameOne.size[1];
-    int capTwoWidth = frameTwo.size[0];
-    int capTwoHeight = frameTwo.size[1];
+    capTwo >> frameTwo;
+    int capOneWidth = frameOne.size[1];
+    int capOneHeight = frameOne.size[0];
+    int capTwoWidth = frameTwo.size[1];
+    int capTwoHeight = frameTwo.size[0];
+
+    cout << capOneWidth << " 1w - 1h " << capOneHeight << endl;
+    cout << capTwoWidth << " 2w - 2h " << capTwoHeight << endl;
+
     Mat fgMaskOne, frameBlurOne, fgMaskTwo, frameBlurTwo;
     Mat cannyOne, cannyTwo;
     Mat contoursOne(capOneWidth, capOneHeight, CV_8UC3, Scalar(0, 0, 0));
     Mat contoursTwo(capTwoWidth, capTwoHeight, CV_8UC3, Scalar(0, 0, 0));
+
+    Mat pointScreen(capOneHeight, capOneWidth, CV_8UC3, Scalar(0, 0, 0));
 
     /*
     for (int i = 0; i < 4; i++) {
@@ -201,7 +209,7 @@ int main()
     Point2f correctedPointOne, correctedPointTwo;
     Point2f pointsTogether;
 
-    Rect emptyScreen(0, 0, capOneHeight, capOneWidth);
+    Rect emptyScreen(0, 0, capOneWidth, capOneHeight);
     touchPointOne.x = 0;
     touchPointOne.y = 0;
     touchPointTwo.x = 0;
@@ -214,8 +222,6 @@ int main()
         capOne >> frameOne;
         capTwo >> frameTwo;
 
-        //warpPerspective(frameOne, imgWarpOne, matrixOne, Point(640, 480));
-        //warpPerspective(frameTwo, imgWarpTwo, matrixTwo, Point(640, 360));
 
         GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
         GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
@@ -229,18 +235,20 @@ int main()
 
 
         touchPointOne = getContours(fgMaskOne, contoursOne);
-        touchPointTwo = getContours(fgMaskOne, contoursTwo);
-        correctedPointOne = updatePoint(touchPointOne, historyOne);
-        correctedPointTwo = updatePoint(touchPointTwo, historyTwo);
+        touchPointTwo = getContours(fgMaskTwo, contoursTwo);
+        correctedPointOne = updatePoint(touchPointOne, historyOne, lastPointOne);
+        correctedPointTwo = updatePoint(touchPointTwo, historyTwo, lastPointTwo);
 
         pointsTogether.x = correctedPointTwo.x;
         pointsTogether.y = correctedPointOne.y;
 
-        rectangle(contoursOne, emptyScreen, Scalar(0, 0, 0), FILLED);
+        rectangle(pointScreen, emptyScreen, Scalar(0, 0, 0), FILLED);
 
-        circle(contoursOne, pointsTogether, 10, Scalar(255, 255, 255), FILLED);
+        circle(pointScreen, pointsTogether, 10, Scalar(255, 255, 255), FILLED);
 
-        imshow("point", contoursOne);
+        //cout << correctedPointTwo.x << " " << correctedPointTwo.y << endl;
+
+        imshow("point", pointScreen);
         imshow("camera1", cannyOne);
         imshow("camera2", cannyTwo);
         //imshow("FG Mask One", fgMaskOne);
