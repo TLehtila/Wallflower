@@ -9,6 +9,8 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/video.hpp>
 
+#include "NoiseFilter.h"
+
 using namespace std;
 using namespace cv;
 
@@ -107,57 +109,6 @@ Point2f getContours(Mat img, Mat imgResult) {
 //    return correctedPoint;
 //}
 
-//https://stackoverflow.com/a/50047253
-static const int maxHistory = 10;
-cv::Point2f lastPointOne;
-cv::Point2f lastPointTwo;
-float pointMaxTolerance;
-Point2f historyOne[maxHistory];
-Point2f historyTwo[maxHistory];
-int historyHead, historySize;
-
-void noiseFilterSmooth(float maxTolerance = 5.5f) {
-    historyHead = historySize = 0;
-    pointMaxTolerance = maxTolerance * maxTolerance;
-    lastPointOne = Point2f(0.0f, 0.0f);
-    lastPointTwo = Point2f(0.0f, 0.0f);
-}
-
-Point2f& getResult(Point2f history[], Point2f lastPoint) {
-    float sumx = 0;
-    float sumy = 0;
-    for (int i = 0; i < historySize; i++) {
-        sumx += history[i].x;
-        sumy += history[i].y;
-    }
-
-    lastPoint.x = sumx / historySize;
-    lastPoint.y = sumy / historySize;
-
-    return lastPoint;
-}
-
-float pointDistance(Point2f& point1, Point2f& point2) {
-    float distancex = point1.x - point2.x;
-    float distancey = point1.y - point2.y;
-    return (distancex * distancex + distancey * distancey);
-}
-
-Point2f& updatePoint(Point2f& newPoint, Point2f history[], Point2f lastPoint) {
-    float distance = pointDistance(lastPoint, newPoint);
-    if (distance > pointMaxTolerance) {
-        historyHead = historySize = 0;
-    }
-    history[historyHead] = newPoint;
-    historyHead = (historyHead + 1) % maxHistory;
-    if (historySize < maxHistory) {
-        historySize++;
-    }
-    Point2f point = getResult(history, lastPoint);
-    return point;
-}
-
-
 int main()
 {
     cout << "OpenCV version is " << CV_VERSION << endl;
@@ -207,7 +158,7 @@ int main()
     */
     Point2f touchPointOne, touchPointTwo;
     Point2f correctedPointOne, correctedPointTwo;
-    Point2f pointsTogether;
+    Point2f pointsTogether, correctedPointsTogether;
 
     Rect emptyScreen(0, 0, capOneWidth, capOneHeight);
     touchPointOne.x = 0;
@@ -216,7 +167,10 @@ int main()
     touchPointTwo.y = 0;
     //initKalman(touchPoint, KFOne, measurementOne);
 
-    noiseFilterSmooth();
+    noiseFilter *noiseFilterOne = new noiseFilter(10.5f);
+    noiseFilter *noiseFilterTwo = new noiseFilter(10.5f);
+    noiseFilter *noiseFilterFinal = new noiseFilter(10.5f);
+
 
     while (true) {
         capOne >> frameOne;
@@ -236,21 +190,27 @@ int main()
 
         touchPointOne = getContours(fgMaskOne, contoursOne);
         touchPointTwo = getContours(fgMaskTwo, contoursTwo);
-        correctedPointOne = updatePoint(touchPointOne, historyOne, lastPointOne);
-        correctedPointTwo = updatePoint(touchPointTwo, historyTwo, lastPointTwo);
+        correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
+        correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
+
 
         pointsTogether.x = correctedPointTwo.x;
         pointsTogether.y = correctedPointOne.y;
 
+        correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
+
         rectangle(pointScreen, emptyScreen, Scalar(0, 0, 0), FILLED);
 
-        circle(pointScreen, pointsTogether, 10, Scalar(255, 255, 255), FILLED);
+        circle(pointScreen, correctedPointsTogether, 10, Scalar(255, 255, 255), FILLED);
 
         //cout << correctedPointTwo.x << " " << correctedPointTwo.y << endl;
 
         imshow("point", pointScreen);
         imshow("camera1", cannyOne);
         imshow("camera2", cannyTwo);
+        
+
+        
         //imshow("FG Mask One", fgMaskOne);
         //imshow("FG Mask Two", fgMaskTwo);
         //imshow("TEST IMAGE 1", imgWarpOne);
