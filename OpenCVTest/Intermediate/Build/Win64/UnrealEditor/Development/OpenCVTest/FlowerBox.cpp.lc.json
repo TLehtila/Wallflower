@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "f:\\unrealprojects\\opencvtest\\source\\opencvtest\\private\\flowerbox.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\opencvtesteditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\development\\opencvtest\\definitions.opencvtest.h",
+            "f:\\unrealprojects\\opencvtest\\source\\opencvtest\\public\\flowerbox.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\components\\boxcomponent.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\components\\shapecomponent.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\shapecomponent.generated.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\boxcomponent.generated.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\engine\\staticmeshactor.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\staticmeshactor.generated.h",
+            "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\inc\\opencvtest\\flowerbox.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

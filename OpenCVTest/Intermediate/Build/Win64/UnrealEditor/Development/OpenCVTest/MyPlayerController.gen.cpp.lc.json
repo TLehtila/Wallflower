@@ -1,0 +1,15 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\inc\\opencvtest\\myplayercontroller.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\opencvtesteditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\development\\opencvtest\\definitions.opencvtest.h",
+            "f:\\unrealprojects\\opencvtest\\source\\opencvtest\\public\\myplayercontroller.h",
+            "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\inc\\opencvtest\\myplayercontroller.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

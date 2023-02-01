@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\OpenCVTest.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\OpenCVTest.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\OpenCVTestEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultLightmass.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultVirtualProductionUtilities.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Config\HoloLens">
+      <UniqueIdentifier>{4C8DD267-CDE7-336F-8602-F5F485D22BAB}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\HoloLens\HoloLensEngine.ini">
+      <Filter>Config\HoloLens</Filter>
+    </None>
+    <Filter Include="Config\Windows">
+      <UniqueIdentifier>{5AE2AEFB-02F3-3CFB-A403-46456DE91BCC}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\Windows\WindowsEngine.ini">
+      <Filter>Config\Windows</Filter>
+    </None>
+    <Filter Include="Source\OpenCVTest">
+      <UniqueIdentifier>{815BCC73-97A6-384F-B20D-16118A2FA924}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\OpenCVTest\OpenCVTest.Build.cs">
+      <Filter>Source\OpenCVTest</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\OpenCVTest\OpenCVTest.cpp">
+      <Filter>Source\OpenCVTest</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\OpenCVTest\OpenCVTest.h">
+      <Filter>Source\OpenCVTest</Filter>
+    </ClInclude>
+    <Filter Include="Source\OpenCVTest\Private">
+      <UniqueIdentifier>{E2E6CB7B-FCE0-336A-83A1-C2FA886D8ED3}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\OpenCVTest\Private\FlowerBox.cpp">
+      <Filter>Source\OpenCVTest\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\OpenCVTest\Private\MyFlower.cpp">
+      <Filter>Source\OpenCVTest\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\OpenCVTest\Private\MyGameModeBase.cpp">
+      <Filter>Source\OpenCVTest\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\OpenCVTest\Private\MyPlayerController.cpp">
+      <Filter>Source\OpenCVTest\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\OpenCVTest\Private\Tutorial_character.cpp">
+      <Filter>Source\OpenCVTest\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\OpenCVTest\Public">
+      <UniqueIdentifier>{9CD8AACB-8ED7-3723-AFFD-1988EE9041D4}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\OpenCVTest\Public\FlowerBox.h">
+      <Filter>Source\OpenCVTest\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\OpenCVTest\Public\MyFlower.h">
+      <Filter>Source\OpenCVTest\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\OpenCVTest\Public\MyGameModeBase.h">
+      <Filter>Source\OpenCVTest\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\OpenCVTest\Public\MyPlayerController.h">
+      <Filter>Source\OpenCVTest\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\OpenCVTest\Public\Tutorial_character.h">
+      <Filter>Source\OpenCVTest\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

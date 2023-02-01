@@ -1,0 +1,14 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "f:\\unrealprojects\\opencvtest\\source\\opencvtest\\opencvtest.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\opencvtesteditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\development\\opencvtest\\definitions.opencvtest.h",
+            "f:\\unrealprojects\\opencvtest\\source\\opencvtest\\opencvtest.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
