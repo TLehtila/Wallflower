@@ -1,13 +1,13 @@
 {
     "Version": "1.1",
     "Data": {
-        "Source": "f:\\unrealprojects\\opencvtest\\source\\opencvtest\\private\\myflower.cpp",
+        "Source": "f:\\schoolstuff\\wallflower\\opencvtest\\source\\opencvtest\\private\\myflower.cpp",
         "ProvidedModule": "",
-        "PCH": "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\opencvtesteditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "PCH": "f:\\schoolstuff\\wallflower\\opencvtest\\intermediate\\build\\win64\\opencvtesteditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
         "Includes": [
-            "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\development\\opencvtest\\definitions.opencvtest.h",
-            "f:\\unrealprojects\\opencvtest\\source\\opencvtest\\public\\myflower.h",
-            "f:\\unrealprojects\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\inc\\opencvtest\\myflower.generated.h"
+            "f:\\schoolstuff\\wallflower\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\development\\opencvtest\\definitions.opencvtest.h",
+            "f:\\schoolstuff\\wallflower\\opencvtest\\source\\opencvtest\\public\\myflower.h",
+            "f:\\schoolstuff\\wallflower\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\inc\\opencvtest\\myflower.generated.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

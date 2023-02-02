@@ -1,8 +1,8 @@
 {
 	"SourceFiles": [
-		"F:\\UnrealProjects\\OpenCVTest\\Source\\OpenCVTest\\OpenCVTest.Build.cs",
-		"F:\\UnrealProjects\\OpenCVTest\\Source\\OpenCVTest.Target.cs",
-		"F:\\UnrealProjects\\OpenCVTest\\Source\\OpenCVTestEditor.Target.cs"
+		"F:\\SchoolStuff\\Wallflower\\OpenCVTest\\Source\\OpenCVTest\\OpenCVTest.Build.cs",
+		"F:\\SchoolStuff\\Wallflower\\OpenCVTest\\Source\\OpenCVTest.Target.cs",
+		"F:\\SchoolStuff\\Wallflower\\OpenCVTest\\Source\\OpenCVTestEditor.Target.cs"
 	],
 	"EngineVersion": "5.0.3"
 }
