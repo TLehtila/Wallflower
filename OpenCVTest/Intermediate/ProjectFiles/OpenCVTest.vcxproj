@@ -363,6 +363,8 @@
     <AdditionalOptions>/std:c++17</AdditionalOptions>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="NoiseFilter.cpp" />
+    <ClInclude Include="NoiseFilter.h" />
     <None Include="..\..\OpenCVTest.uproject" />
     <None Include="..\..\Source\OpenCVTest.Target.cs" />
     <None Include="..\..\Source\OpenCVTestEditor.Target.cs" />
