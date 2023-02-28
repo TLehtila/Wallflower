@@ -18,9 +18,14 @@
 #include "PreOpenCVHeaders.h"
 #include "OpenCVHelper.h"
 #include <ThirdParty/OpenCV/include/opencv2/imgproc.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/imgcodecs.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/videoio.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/video.hpp>
 #include <ThirdParty/OpenCV/include/opencv2/highgui/highgui.hpp>
 #include <ThirdParty/OpenCV/include/opencv2/core.hpp>
 #include "PostOpenCVHeaders.h"
+
+#include "NoiseFilter.h"
 
 
 #include "FlowerBox.generated.h"
@@ -51,6 +56,8 @@ private:
 	UFUNCTION()
 	void SpawnActorScheduled();
 
+	cv::Point2f getContours(cv::Mat img);
+
 public:
 	//Actor class to spawn
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
@@ -60,10 +67,10 @@ public:
 	bool ShouldSpawn = true;
 
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
-	float SpawnTime = 5.0f;
+	float SpawnTime = 0.5f;
 
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
-	float RandomTime = 1.0f;
+	float RandomTime = 0.4f;
 
 private:
 	//Box for spawning actors
@@ -73,5 +80,26 @@ private:
 	FTimerHandle SpawnTimerHandle;
 
 	cv::VideoCapture capOne;
+	cv::VideoCapture capTwo;
+	cv::Ptr<cv::BackgroundSubtractor> pBackSubOne;
+	cv::Ptr<cv::BackgroundSubtractor> pBackSubTwo;
+	cv::Mat frameOne;
+	cv::Mat frameTwo;
+
+	cv::Mat fgMaskOne, frameBlurOne, fgMaskTwo, frameBlurTwo;
+	cv::Mat cannyOne, cannyTwo;
+	cv::Mat contoursOne;
+	cv::Mat contoursTwo;
+
+	cv::Mat pointScreen;
+	cv::Point2f touchPointOne, touchPointTwo;
+	cv::Point2f correctedPointOne, correctedPointTwo;
+	cv::Point2f pointsTogether, correctedPointsTogether;
+
+	cv::Rect emptyScreen;
+
+	NoiseFilter* noiseFilterOne;
+	NoiseFilter* noiseFilterTwo;
+	NoiseFilter* noiseFilterFinal;
 
 };

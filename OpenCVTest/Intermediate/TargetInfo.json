@@ -2,12 +2,12 @@
 	"Targets": [
 		{
 			"Name": "OpenCVTest",
-			"Path": "F:\\UnrealProjects\\OpenCVTest\\Source\\OpenCVTest.Target.cs",
+			"Path": "F:\\SchoolStuff\\Wallflower\\OpenCVTest\\Source\\OpenCVTest.Target.cs",
 			"Type": "Game"
 		},
 		{
 			"Name": "OpenCVTestEditor",
-			"Path": "F:\\UnrealProjects\\OpenCVTest\\Source\\OpenCVTestEditor.Target.cs",
+			"Path": "F:\\SchoolStuff\\Wallflower\\OpenCVTest\\Source\\OpenCVTestEditor.Target.cs",
 			"Type": "Editor"
 		}
 	]

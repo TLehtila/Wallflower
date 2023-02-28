@@ -261,6 +261,7 @@ F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest\Private\MyGameModeBase.cp
 /I ..\Plugins\Runtime\OpenCV\Source\OpenCVHelper\Public
 /I F:\SchoolStuff\Wallflower\OpenCVTest\Intermediate\Build\Win64\UnrealEditor\Inc\OpenCVTest
 /I F:\SchoolStuff\Wallflower\OpenCVTest\Source
+/I F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest
 /I F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest\Public
 /I ThirdParty\mimalloc\include
 /I ThirdParty\LibTiff\Source\Win64

@@ -11,30 +11,28 @@
 
 #include "NoiseFilter.h"
 
-using namespace std;
-using namespace cv;
 
-Point2f getContours(Mat img, Mat imgResult) {
-    Point2f coordinates;
-    vector<vector<Point>> contours;
-    vector<Vec4i> hierarchy;
+cv::Point2f getContours(cv::Mat img, cv::Mat imgResult) {
+    cv::Point2f coordinates;
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i> hierarchy;
 
-    findContours(img, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+    findContours(img, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
     //drawContours(imgResult, contours, -1, Scalar(150, 50, 0), 5);
 
     //Point corner;
-    vector<vector<Point>> contourPoly(contours.size());
-    vector<Rect> boundRectangle(contours.size());
+    std::vector<std::vector<cv::Point>> contourPoly(contours.size());
+    std::vector<cv::Rect> boundRectangle(contours.size());
 
     for (int i = 0; i < contours.size(); i++) {
-        int area = contourArea(contours[i]);
+        int area = cv::contourArea(contours[i]);
         if (area > 1000) {
-            float perimeter = arcLength(contours[i], true);
-            approxPolyDP(contours[i], contourPoly[i], 0.02 * perimeter, true);
+            float perimeter = cv::arcLength(contours[i], true);
+            cv::approxPolyDP(contours[i], contourPoly[i], 0.02 * perimeter, true);
             //drawContours(imgResult, contourPoly, i, Scalar(150, 50, 0), 5);
 
-            boundRectangle[i] = boundingRect(contourPoly[i]);
-            rectangle(imgResult, boundRectangle[i].tl(), boundRectangle[i].br(), Scalar(255, 255, 255), 5);
+            boundRectangle[i] = cv::boundingRect(contourPoly[i]);
+            rectangle(imgResult, boundRectangle[i].tl(), boundRectangle[i].br(), cv::Scalar(255, 255, 255), 5);
             coordinates = boundRectangle[i].br();
 
         }
@@ -111,18 +109,18 @@ Point2f getContours(Mat img, Mat imgResult) {
 
 int main()
 {
-    cout << "OpenCV version is " << CV_VERSION << endl;
+    std::cout << "OpenCV version is " << CV_VERSION << std::endl;
 
 
     // VideoCapture cap(camera id = 0->)
-    VideoCapture capOne(0);
-    VideoCapture capTwo(1);
+    cv::VideoCapture capOne(0);
+    cv::VideoCapture capTwo(1);
     //Mat img, imgBlur, imgCanny;
 
-    Ptr<BackgroundSubtractor> pBackSubOne;
-    pBackSubOne = createBackgroundSubtractorMOG2();
-    Ptr<BackgroundSubtractor> pBackSubTwo;
-    pBackSubTwo = createBackgroundSubtractorMOG2();
+    cv::Ptr<cv::BackgroundSubtractor> pBackSubOne;
+    pBackSubOne = cv::createBackgroundSubtractorMOG2();
+    cv::Ptr<cv::BackgroundSubtractor> pBackSubTwo;
+    pBackSubTwo = cv::createBackgroundSubtractorMOG2();
 
     //Point2f sourcePointsOne[4] = { {130, 95}, {640, 0}, {60, 435}, {640, 480} };
     //Point2f sourcePointsTwo[4] = { {30, 90}, {625, 80}, {0, 360}, {640, 360} };
@@ -132,35 +130,35 @@ int main()
 
     //matrixOne = getPerspectiveTransform(sourcePointsOne, destPointsOne);
     //matrixTwo = getPerspectiveTransform(sourcePointsTwo, destPointsTwo);
-    Mat frameOne;
+    cv::Mat frameOne;
     capOne >> frameOne;
-    Mat frameTwo;
+    cv::Mat frameTwo;
     capTwo >> frameTwo;
     int capOneWidth = frameOne.size[1];
     int capOneHeight = frameOne.size[0];
     int capTwoWidth = frameTwo.size[1];
     int capTwoHeight = frameTwo.size[0];
 
-    cout << capOneWidth << " 1w - 1h " << capOneHeight << endl;
-    cout << capTwoWidth << " 2w - 2h " << capTwoHeight << endl;
+    std::cout << capOneWidth << " 1w - 1h " << capOneHeight << std::endl;
+    std::cout << capTwoWidth << " 2w - 2h " << capTwoHeight << std::endl;
 
-    Mat fgMaskOne, frameBlurOne, fgMaskTwo, frameBlurTwo;
-    Mat cannyOne, cannyTwo;
-    Mat contoursOne(capOneWidth, capOneHeight, CV_8UC3, Scalar(0, 0, 0));
-    Mat contoursTwo(capTwoWidth, capTwoHeight, CV_8UC3, Scalar(0, 0, 0));
+    cv::Mat fgMaskOne, frameBlurOne, fgMaskTwo, frameBlurTwo;
+    cv::Mat cannyOne, cannyTwo;
+    cv::Mat contoursOne(capOneWidth, capOneHeight, CV_8UC3, cv::Scalar(0, 0, 0));
+    cv::Mat contoursTwo(capTwoWidth, capTwoHeight, CV_8UC3, cv::Scalar(0, 0, 0));
 
-    Mat pointScreen(capOneHeight, capOneWidth, CV_8UC3, Scalar(0, 0, 0));
+    cv::Mat pointScreen(capOneHeight, capOneWidth, CV_8UC3, cv::Scalar(0, 0, 0));
 
     /*
     for (int i = 0; i < 4; i++) {
         circle(frameOne, sourcePointsOne[i], 10, Scalar(0, 0, 255), FILLED);
     }
     */
-    Point2f touchPointOne, touchPointTwo;
-    Point2f correctedPointOne, correctedPointTwo;
-    Point2f pointsTogether, correctedPointsTogether;
+    cv::Point2f touchPointOne, touchPointTwo;
+    cv::Point2f correctedPointOne, correctedPointTwo;
+    cv::Point2f pointsTogether, correctedPointsTogether;
 
-    Rect emptyScreen(0, 0, capOneWidth, capOneHeight);
+    cv::Rect emptyScreen(0, 0, capOneWidth, capOneHeight);
     touchPointOne.x = 0;
     touchPointOne.y = 0;
     touchPointTwo.x = 0;
@@ -177,12 +175,12 @@ int main()
         capTwo >> frameTwo;
 
 
-        GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
-        GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
+        //GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
+        //GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
 
 
-        pBackSubOne->apply(frameBlurOne, fgMaskOne, -1.0);
-        pBackSubTwo->apply(frameBlurTwo, fgMaskTwo, -1.0);
+        pBackSubOne->apply(frameOne, fgMaskOne, -1.0);
+        pBackSubTwo->apply(frameTwo, fgMaskTwo, -1.0);
 
         Canny(fgMaskOne, cannyOne, 50, 150);
         Canny(fgMaskTwo, cannyTwo, 50, 150);
@@ -199,9 +197,9 @@ int main()
 
         correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
 
-        rectangle(pointScreen, emptyScreen, Scalar(0, 0, 0), FILLED);
+        rectangle(pointScreen, emptyScreen, cv::Scalar(0, 0, 0), cv::FILLED);
 
-        circle(pointScreen, correctedPointsTogether, 10, Scalar(255, 255, 255), FILLED);
+        circle(pointScreen, correctedPointsTogether, 10, cv::Scalar(255, 255, 255), cv::FILLED);
 
         //cout << correctedPointTwo.x << " " << correctedPointTwo.y << endl;
 

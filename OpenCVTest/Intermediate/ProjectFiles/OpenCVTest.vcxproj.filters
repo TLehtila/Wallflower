@@ -96,14 +96,4 @@
       <Filter>Source\OpenCVTest\Public</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="NoiseFilter.cpp">
-      <Filter>Source\OpenCVTest\Private</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="NoiseFilter.h">
-      <Filter>Source\OpenCVTest\Public</Filter>
-    </ClInclude>
-  </ItemGroup>
 </Project>

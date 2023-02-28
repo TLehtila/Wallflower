@@ -1,25 +1,27 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
 #include "NoiseFilter.h"
 
+#include "PreOpenCVHeaders.h"
+#include "OpenCVHelper.h"
+#include <ThirdParty/OpenCV/include/opencv2/imgproc.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/imgcodecs.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/videoio.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/video.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/highgui/highgui.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/core.hpp>
+#include "PostOpenCVHeaders.h"
 
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/videoio.hpp>
-#include <opencv2/video.hpp>
-
-
-//https://stackoverflow.com/a/50047253
-static const int maxHistory = 10;
-cv::Point2f lastPoint;
-float pointMaxTolerance;
-cv::Point2f history[maxHistory];
-int historyHead, historySize;
-
-
-NoiseFilter::noiseFilter(float maxTolerance) {
+NoiseFilter::NoiseFilter(float maxTolerance )
+{
     historyHead = historySize = 0;
     pointMaxTolerance = maxTolerance * maxTolerance;
     lastPoint = cv::Point2f(0.0f, 0.0f);
+}
+
+NoiseFilter::~NoiseFilter()
+{
 }
 
 cv::Point2f& NoiseFilter::getResult() {
@@ -37,7 +39,7 @@ cv::Point2f& NoiseFilter::getResult() {
 }
 
 cv::Point2f& NoiseFilter::updatePoint(cv::Point2f newPoint) {
-    float distance = noiseFilter::pointDistance(lastPoint, newPoint);
+    float distance = pointDistance(lastPoint, newPoint);
     if (distance > pointMaxTolerance) {
         historyHead = historySize = 0;
     }
