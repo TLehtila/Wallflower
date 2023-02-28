@@ -1,17 +1,17 @@
 F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest\OpenCVTest.cpp
 /I .
 /I F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest\Private
-/I ..\Intermediate\Build\Win64\UnrealEditor\Inc\Engine
 /I Runtime
+/I Runtime\TraceLog\Public
+/I Runtime\Core\Public
+/I ..\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject
+/I Runtime\CoreUObject\Public
+/I ..\Intermediate\Build\Win64\UnrealEditor\Inc\Engine
 /I ..\Shaders\Shared
 /I Runtime\Engine\Classes
 /I Runtime\Engine\Public
-/I Runtime\TraceLog\Public
-/I Runtime\Core\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\CoreOnline
 /I Runtime\CoreOnline\Public
-/I ..\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject
-/I Runtime\CoreUObject\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\NetCore
 /I Runtime\Net
 /I Runtime\Net\Core\Classes
@@ -252,13 +252,16 @@ F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest\OpenCVTest.cpp
 /I Runtime\ClothingSystemRuntimeInterface\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\AnimationDataController
 /I Developer\AnimationDataController\Public
-/I F:\SchoolStuff\Wallflower\OpenCVTest\Intermediate\Build\Win64\UnrealEditor\Inc\OpenCVTest
-/I F:\SchoolStuff\Wallflower\OpenCVTest\Source
-/I F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest\Public
+/I Runtime\RHICore\Public
+/I Runtime\D3D12RHI\Public
+/I ThirdParty\Windows
 /I ..\Plugins\Runtime\OpenCV\Source\ThirdParty
 /I ..\Plugins\Runtime\OpenCV\Intermediate\Build\Win64\UnrealEditor\Inc\OpenCVHelper
 /I ..\Plugins\Runtime\OpenCV\Source
 /I ..\Plugins\Runtime\OpenCV\Source\OpenCVHelper\Public
+/I F:\SchoolStuff\Wallflower\OpenCVTest\Intermediate\Build\Win64\UnrealEditor\Inc\OpenCVTest
+/I F:\SchoolStuff\Wallflower\OpenCVTest\Source
+/I F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest\Public
 /I ThirdParty\mimalloc\include
 /I ThirdParty\LibTiff\Source\Win64
 /I ThirdParty\LibTiff\Source
@@ -273,6 +276,7 @@ F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest\OpenCVTest.cpp
 /I ThirdParty\PhysX3\PhysX_3.4\Include\common
 /I ThirdParty\PhysX3\PhysX_3.4\Include\extensions
 /I ThirdParty\PhysX3\PhysX_3.4\Include\geometry
+/I ThirdParty\Windows\PIX\include
 /I ..\Plugins\Runtime\OpenCV\Source\ThirdParty\OpenCV\include
 /I "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\INCLUDE"
 /I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"

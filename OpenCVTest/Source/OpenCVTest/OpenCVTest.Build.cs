@@ -10,13 +10,29 @@ public class OpenCVTest : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "OpenCV", "OpenCVHelper" });
 		PublicIncludePaths.AddRange(new string[] { "OpenCV/Public", "OpenCV/Classes" });
-		
-		
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+
+
+
+		PrivateDependencyModuleNames.AddRange(
+							new string[]
+							{
+										"Core",
+										"CoreUObject",
+										"Engine",
+										"Renderer",
+										"RenderCore",
+										"RHI",
+										"RHICore",
+										"D3D12RHI",
+										"OpenCV",
+										"OpenCVHelper" 
+								// ... add private dependencies that you statically link with here ...  
+							}
+						);
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
+
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 

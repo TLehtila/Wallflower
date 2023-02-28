@@ -2,13 +2,26 @@
 
 
 #include "FlowerBox.h"
-#include <opencv2/core.hpp>
+//#include <opencv2/core.hpp>
 //
 //#include <opencv2/imgcodecs.hpp>
 //#include <opencv2/highgui.hpp>
 //#include <opencv2/imgproc.hpp>
 //#include <opencv2/videoio.hpp>
 //#include <opencv2/video.hpp>
+
+#include <fstream>
+#include <iostream>
+#include <array>
+#include <string>
+#include <filesystem>
+
+#include "PreOpenCVHeaders.h"
+#include "OpenCVHelper.h"
+#include <ThirdParty/OpenCV/include/opencv2/imgproc.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/highgui/highgui.hpp>
+#include <ThirdParty/OpenCV/include/opencv2/core.hpp>
+#include "PostOpenCVHeaders.h"
 
 
 // Sets default values
@@ -19,7 +32,7 @@ AFlowerBox::AFlowerBox()
 
 	//PrimaryActorTick.bStartWithTickEnabled = true;
 	//PrimaryActorTick.bAllowTickOnDedicatedServer = true;
-	//bAllowTickBeforeBeginPlay = true;
+	bAllowTickBeforeBeginPlay = true;
 
 	//PrimaryActorTick.RegisterTickFunction(GetLevel());
 
@@ -69,9 +82,9 @@ void AFlowerBox::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Tick tock"));
-	//cv::Mat frameOne;
-	//capOne.read(frameOne);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Tick tock"));
+	cv::Mat frameOne;
+	capOne.read(frameOne);
 
 	//cv::imshow("camera", frameOne);
 

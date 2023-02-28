@@ -150,6 +150,10 @@
 		{
 			"Name": "MovieRenderPipeline",
 			"Enabled": true
+		},
+		{
+			"Name": "OpenCV",
+			"Enabled": true
 		}
 	]
 }

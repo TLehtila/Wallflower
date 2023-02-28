@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "f:\\schoolstuff\\wallflower\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\inc\\opencvtest\\tutorial_character.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\schoolstuff\\wallflower\\opencvtest\\intermediate\\build\\win64\\opencvtesteditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "f:\\schoolstuff\\wallflower\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\development\\opencvtest\\definitions.opencvtest.h",
+            "f:\\schoolstuff\\wallflower\\opencvtest\\source\\opencvtest\\public\\tutorial_character.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\gameframework\\character.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\gameframework\\charactermovementreplication.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\charactermovementreplication.generated.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\gameframework\\rootmotionsource.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\rootmotionsource.generated.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\character.generated.h",
+            "f:\\schoolstuff\\wallflower\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\inc\\opencvtest\\tutorial_character.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
