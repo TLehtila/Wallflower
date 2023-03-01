@@ -17,7 +17,7 @@ cv::Point2f getContours(cv::Mat img, cv::Mat imgResult) {
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
 
-    findContours(img, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+    cv::findContours(img, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
     //drawContours(imgResult, contours, -1, Scalar(150, 50, 0), 5);
 
     //Point corner;

@@ -67,13 +67,13 @@ void AFlowerBox::BeginPlay()
 	noiseFilterFinal = new NoiseFilter(10.5f);
 
 
-	capOne >> frameOne;
-	capTwo >> frameTwo;
+	//capOne >> frameOne;
+	//capTwo >> frameTwo;
 
-	int capOneWidth = frameOne.size[1];
-	int capOneHeight = frameOne.size[0];
-	int capTwoWidth = frameTwo.size[1];
-	int capTwoHeight = frameTwo.size[0];
+	//int capOneWidth = frameOne.size[1];
+	//int capOneHeight = frameOne.size[0];
+	//int capTwoWidth = frameTwo.size[1];
+	//int capTwoHeight = frameTwo.size[0];
 
 
 
@@ -99,23 +99,23 @@ void AFlowerBox::Tick(float DeltaTime)
 	//GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
 
 
-	pBackSubOne->apply(frameOne, fgMaskOne, -1.0);
-	pBackSubTwo->apply(frameTwo, fgMaskTwo, -1.0);
+	//pBackSubOne->cv::apply(frameOne, fgMaskOne, -1.0);
+	//pBackSubTwo->cv::apply(frameTwo, fgMaskTwo, -1.0);
 
-	Canny(fgMaskOne, cannyOne, 50, 150);
-	Canny(fgMaskTwo, cannyTwo, 50, 150);
-
-
-	touchPointOne = getContours(fgMaskOne);
-	touchPointTwo = getContours(fgMaskTwo);
-	correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
-	correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
+	//cv::Canny(fgMaskOne, cannyOne, 50, 150);
+	//cv::Canny(fgMaskTwo, cannyTwo, 50, 150);
 
 
-	pointsTogether.x = correctedPointTwo.x;
-	pointsTogether.y = correctedPointOne.y;
+	//touchPointOne = getContours(fgMaskOne);
+	//touchPointTwo = getContours(fgMaskTwo);
+	//correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
+	//correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
 
-	correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
+
+	//pointsTogether.x = correctedPointTwo.x;
+	//pointsTogether.y = correctedPointOne.y;
+
+	//correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
 
 	
 
@@ -168,12 +168,12 @@ void AFlowerBox::SpawnActorScheduled() {
 
 
 
-cv::Point2f getContours(cv::Mat img) {
+cv::Point2f AFlowerBox::getContours(cv::Mat img) {
 	cv::Point2f coordinates;
 	std::vector<std::vector<cv::Point>> contours;
 	std::vector<cv::Vec4i> hierarchy;
 
-	findContours(img, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+	cv::findContours(img, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 	//drawContours(imgResult, contours, -1, Scalar(150, 50, 0), 5);
 
 	//Point corner;
@@ -188,7 +188,7 @@ cv::Point2f getContours(cv::Mat img) {
 			//drawContours(imgResult, contourPoly, i, Scalar(150, 50, 0), 5);
 
 			boundRectangle[i] = cv::boundingRect(contourPoly[i]);
-			rectangle(imgResult, boundRectangle[i].tl(), boundRectangle[i].br(), cv::Scalar(255, 255, 255), 5);
+			//rectangle(imgResult, boundRectangle[i].tl(), boundRectangle[i].br(), cv::Scalar(255, 255, 255), 5);
 			coordinates = boundRectangle[i].br();
 
 		}

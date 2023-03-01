@@ -279,12 +279,12 @@ F:\SchoolStuff\Wallflower\OpenCVTest\Source\OpenCVTest\OpenCVTest.cpp
 /I ThirdParty\PhysX3\PhysX_3.4\Include\geometry
 /I ThirdParty\Windows\PIX\include
 /I ..\Plugins\Runtime\OpenCV\Source\ThirdParty\OpenCV\include
-/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\INCLUDE"
+/I F:\Programs\VS22\VC\Tools\MSVC\14.35.32215\INCLUDE
 /I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\ucrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\shared"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\winrt"
 /FI"F:\SchoolStuff\Wallflower\OpenCVTest\Intermediate\Build\Win64\OpenCVTestEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
 /FI"F:\SchoolStuff\Wallflower\OpenCVTest\Intermediate\Build\Win64\UnrealEditor\Development\OpenCVTest\Definitions.OpenCVTest.h"
 /Yu"F:\SchoolStuff\Wallflower\OpenCVTest\Intermediate\Build\Win64\OpenCVTestEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
