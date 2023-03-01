@@ -81,12 +81,14 @@ private:
 
 	cv::VideoCapture capOne;
 	cv::VideoCapture capTwo;
-	cv::Ptr<cv::BackgroundSubtractor> pBackSubOne;
-	cv::Ptr<cv::BackgroundSubtractor> pBackSubTwo;
 	cv::Mat frameOne;
 	cv::Mat frameTwo;
 
-	cv::Mat fgMaskOne, frameBlurOne, fgMaskTwo, frameBlurTwo;
+	cv::Ptr<cv::BackgroundSubtractor> pBackSubOne;
+	cv::Ptr<cv::BackgroundSubtractor> pBackSubTwo;
+
+	cv::Mat fgMaskOne, fgMaskTwo;
+	//cv::Mat frameBlurOne, frameBlurTwo;
 	cv::Mat cannyOne, cannyTwo;
 	cv::Mat contoursOne;
 	cv::Mat contoursTwo;
@@ -96,7 +98,7 @@ private:
 	cv::Point2f correctedPointOne, correctedPointTwo;
 	cv::Point2f pointsTogether, correctedPointsTogether;
 
-	cv::Rect emptyScreen;
+	//cv::Rect emptyScreen;
 
 	NoiseFilter* noiseFilterOne;
 	NoiseFilter* noiseFilterTwo;

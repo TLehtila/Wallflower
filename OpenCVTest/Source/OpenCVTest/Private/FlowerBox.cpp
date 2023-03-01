@@ -54,18 +54,21 @@ void AFlowerBox::BeginPlay()
 	}
 
 	capOne.open(0);
+	capTwo.open(1);
 
-	if (!capOne.isOpened()) {
+	if (!capOne.isOpened() || !capTwo.isOpened()) {
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to open videocapture"));
 	}
 	else {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Videocapture open??"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Videocaptures open"));
 	}
 
 	noiseFilterOne = new NoiseFilter(10.5f);
 	noiseFilterTwo = new NoiseFilter(10.5f);
 	noiseFilterFinal = new NoiseFilter(10.5f);
 
+	pBackSubOne = cv::createBackgroundSubtractorMOG2();
+	pBackSubTwo = cv::createBackgroundSubtractorMOG2();
 
 	//capOne >> frameOne;
 	//capTwo >> frameTwo;
@@ -84,8 +87,9 @@ void AFlowerBox::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	capOne.read(frameOne);
+	capTwo.read(frameTwo);
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Tick tock"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Tick tock"));
 	//cv::imshow("camera", frameOne);
 
 
@@ -99,23 +103,26 @@ void AFlowerBox::Tick(float DeltaTime)
 	//GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
 
 
-	//pBackSubOne->cv::apply(frameOne, fgMaskOne, -1.0);
-	//pBackSubTwo->cv::apply(frameTwo, fgMaskTwo, -1.0);
+	pBackSubOne->apply(frameOne, fgMaskOne, -1.0);
+	pBackSubTwo->apply(frameTwo, fgMaskTwo, -1.0);
 
-	//cv::Canny(fgMaskOne, cannyOne, 50, 150);
-	//cv::Canny(fgMaskTwo, cannyTwo, 50, 150);
+	cv::Canny(fgMaskOne, cannyOne, 50, 150);
+	cv::Canny(fgMaskTwo, cannyTwo, 50, 150);
 
 
-	//touchPointOne = getContours(fgMaskOne);
-	//touchPointTwo = getContours(fgMaskTwo);
+	touchPointOne = getContours(fgMaskOne);
+	touchPointTwo = getContours(fgMaskTwo);
 	//correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
 	//correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
 
 
-	//pointsTogether.x = correctedPointTwo.x;
-	//pointsTogether.y = correctedPointOne.y;
+	pointsTogether.x = touchPointTwo.x;
+	pointsTogether.y = touchPointOne.y;
 
-	//correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
+	correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
+
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("coordinates: x = %f, y = %f"), correctedPointsTogether.x, correctedPointsTogether.y));
 
 	
 
