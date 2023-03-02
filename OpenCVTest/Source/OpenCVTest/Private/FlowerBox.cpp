@@ -125,12 +125,15 @@ void AFlowerBox::Tick(float DeltaTime)
 
 	touchPointOne = getContours(fgMaskOne);
 	touchPointTwo = getContours(fgMaskTwo);
-	//correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
-	//correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
+	correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
+	correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
 
 
-	pointsTogether.x = touchPointOne.x;
-	pointsTogether.y = touchPointTwo.y;
+	//pointsTogether.x = touchPointTwo.x;
+	//pointsTogether.y = touchPointOne.y;
+
+	pointsTogether.x = correctedPointTwo.x;
+	pointsTogether.y = correctedPointOne.y;
 
 	correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
 
@@ -139,6 +142,9 @@ void AFlowerBox::Tick(float DeltaTime)
 	displayPointX = displayX - ((correctedPointsTogether.x * displayX) / cameraX) + additionalX;
 	displayPointY = displayY - ((correctedPointsTogether.y * displayY) / cameraY) + additionalY;
 	
+	//displayPointX = (correctedPointsTogether.x * displayX) / cameraX + additionalX;
+	//displayPointY = (correctedPointsTogether.y * displayY) / cameraY + additionalY;
+	//displayPointY = 100;
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
 

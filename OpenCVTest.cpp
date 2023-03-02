@@ -204,8 +204,8 @@ int main()
         //cout << correctedPointTwo.x << " " << correctedPointTwo.y << endl;
 
         imshow("point", pointScreen);
-        imshow("camera1", cannyOne);
-        imshow("camera2", cannyTwo);
+        imshow("camera1", frameOne);
+        imshow("camera2", frameTwo);
         
 
         
