@@ -82,6 +82,8 @@
             "f:\\programs\\ue_5.0\\engine\\source\\runtime\\core\\public\\math\\unitconversion.inl",
             "f:\\programs\\ue_5.0\\engine\\source\\runtime\\core\\public\\internationalization\\polyglottextdata.h",
             "f:\\programs\\ue_5.0\\engine\\source\\runtime\\coreuobject\\public\\assetregistry\\arfilter.h",
+            "f:\\schoolstuff\\wallflower\\opencvtest\\source\\opencvtest\\public\\myflower.h",
+            "f:\\schoolstuff\\wallflower\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\inc\\opencvtest\\myflower.generated.h",
             "f:\\schoolstuff\\wallflower\\opencvtest\\intermediate\\build\\win64\\unrealeditor\\inc\\opencvtest\\flowerbox.generated.h",
             "f:\\programs\\vs22\\vc\\tools\\msvc\\14.35.32215\\include\\fstream",
             "f:\\programs\\vs22\\vc\\tools\\msvc\\14.35.32215\\include\\filesystem",
@@ -95,7 +97,15 @@
             "f:\\programs\\vs22\\vc\\tools\\msvc\\14.35.32215\\include\\xlocmes",
             "f:\\programs\\ue_5.0\\engine\\plugins\\runtime\\opencv\\source\\opencvhelper\\public\\preopencvheaders.h",
             "f:\\programs\\ue_5.0\\engine\\plugins\\runtime\\opencv\\source\\thirdparty\\opencv\\include\\opencv2\\highgui\\highgui.hpp",
-            "f:\\programs\\ue_5.0\\engine\\plugins\\runtime\\opencv\\source\\opencvhelper\\public\\postopencvheaders.h"
+            "f:\\programs\\ue_5.0\\engine\\plugins\\runtime\\opencv\\source\\opencvhelper\\public\\postopencvheaders.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\kismet\\gameplaystatics.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\kismet\\kismetsystemlibrary.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\kismetsystemlibrary.generated.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\sound\\dialoguetypes.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\dialoguetypes.generated.h",
+            "f:\\programs\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\kismet\\gameplaystaticstypes.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\gameplaystaticstypes.generated.h",
+            "f:\\programs\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\gameplaystatics.generated.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

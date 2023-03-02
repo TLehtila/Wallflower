@@ -24,6 +24,8 @@
 #include <ThirdParty/OpenCV/include/opencv2/core.hpp>
 #include "PostOpenCVHeaders.h"
 
+#include "Kismet/GameplayStatics.h"
+
 #include "NoiseFilter.h"
 
 
@@ -99,15 +101,6 @@ void AFlowerBox::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
-
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Tick tock"));
-	//cv::imshow("camera", frameOne);
-
-
-	//capOne.read(frameOne);
-	//capTwo.read(frameTwo);
-
 	capOne >> frameOne;
 	capTwo >> frameTwo;
 
@@ -128,10 +121,6 @@ void AFlowerBox::Tick(float DeltaTime)
 	correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
 	correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
 
-
-	//pointsTogether.x = touchPointTwo.x;
-	//pointsTogether.y = touchPointOne.y;
-
 	pointsTogether.x = correctedPointTwo.x;
 	pointsTogether.y = correctedPointOne.y;
 
@@ -141,14 +130,26 @@ void AFlowerBox::Tick(float DeltaTime)
 
 	displayPointX = displayX - ((correctedPointsTogether.x * displayX) / cameraX) + additionalX;
 	displayPointY = displayY - ((correctedPointsTogether.y * displayY) / cameraY) + additionalY;
-	
-	//displayPointX = (correctedPointsTogether.x * displayX) / cameraX + additionalX;
-	//displayPointY = (correctedPointsTogether.y * displayY) / cameraY + additionalY;
-	//displayPointY = 100;
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
 
-	
+	TArray<AActor*> flowersToFind;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMyFlower::StaticClass(), flowersToFind);
+
+	for (AActor* flowerActor : flowersToFind) {
+
+		AMyFlower* myFlowerCast = Cast<AMyFlower>(flowerActor);
+		if (myFlowerCast) {
+			FVector flowerLocation = myFlowerCast->GetActorLocation();
+			FRotator flowerRotation = myFlowerCast->GetActorRotation();
+
+			flowerLocation.Z += 1;
+			flowerRotation += {10, 0, 0};
+		
+			myFlowerCast->SetActorLocation(flowerLocation);
+			myFlowerCast->SetActorRotation(flowerRotation);
+		}
+	}
 
 }
 
@@ -158,7 +159,8 @@ void AFlowerBox::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 bool AFlowerBox::SpawnActor() {
-	bool SpawnedActor = false;
+	bool Success = false;
+	AActor* SpawnedActor;
 	if (true) {
 		FBoxSphereBounds BoxBounds = SpawnBox->CalcBounds(GetActorTransform());
 
@@ -169,15 +171,19 @@ bool AFlowerBox::SpawnActor() {
 		SpawnLocation.Y += displayPointX;
 		SpawnLocation.Z += displayPointY;
 
-		SpawnedActor = GetWorld()->SpawnActor<AActor>(FlowerToBeSpawned, SpawnLocation, SpawnRotation) != nullptr;
+		SpawnedActor = GetWorld()->SpawnActor<AActor>(FlowerToBeSpawned, SpawnLocation, SpawnRotation);
 
-		if (SpawnedActor) {
+		if (SpawnedActor != nullptr) {
+			Success = true;
+		}
+
+		if (Success) {
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Spawned"));
 		}
 	}
 
-	return SpawnedActor;
+	return Success;
 }
 
 void AFlowerBox::ScheduleActorSpawn() {

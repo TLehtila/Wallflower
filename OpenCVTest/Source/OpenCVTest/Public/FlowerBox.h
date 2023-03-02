@@ -15,6 +15,8 @@
 //#include <opencv2/videoio.hpp>
 //#include <opencv2/video.hpp>
 
+#include "vector"
+
 #include "PreOpenCVHeaders.h"
 #include "OpenCVHelper.h"
 #include <ThirdParty/OpenCV/include/opencv2/imgproc.hpp>
@@ -26,6 +28,7 @@
 #include "PostOpenCVHeaders.h"
 
 #include "NoiseFilter.h"
+#include "MyFlower.h"
 
 
 #include "FlowerBox.generated.h"
