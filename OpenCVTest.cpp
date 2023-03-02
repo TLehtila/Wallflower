@@ -144,8 +144,8 @@ int main()
 
     cv::Mat fgMaskOne, frameBlurOne, fgMaskTwo, frameBlurTwo;
     cv::Mat cannyOne, cannyTwo;
-    cv::Mat contoursOne(capOneWidth, capOneHeight, CV_8UC3, cv::Scalar(0, 0, 0));
-    cv::Mat contoursTwo(capTwoWidth, capTwoHeight, CV_8UC3, cv::Scalar(0, 0, 0));
+    cv::Mat contoursOne(capOneHeight, capOneWidth, CV_8UC3, cv::Scalar(0, 0, 0));
+    cv::Mat contoursTwo(capTwoHeight, capTwoWidth, CV_8UC3, cv::Scalar(0, 0, 0));
 
     cv::Mat pointScreen(capOneHeight, capOneWidth, CV_8UC3, cv::Scalar(0, 0, 0));
 

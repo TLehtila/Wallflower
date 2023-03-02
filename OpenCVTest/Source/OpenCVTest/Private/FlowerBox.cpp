@@ -16,6 +16,7 @@
 #include <string>
 #include <filesystem>
 
+//https://forums.unrealengine.com/t/using-unreal-engine-5-0-3-or-5-1-0-built-in-opencv-plugin/744951
 #include "PreOpenCVHeaders.h"
 #include "OpenCVHelper.h"
 #include <ThirdParty/OpenCV/include/opencv2/imgproc.hpp>
@@ -70,14 +71,26 @@ void AFlowerBox::BeginPlay()
 	pBackSubOne = cv::createBackgroundSubtractorMOG2();
 	pBackSubTwo = cv::createBackgroundSubtractorMOG2();
 
-	//capOne >> frameOne;
-	//capTwo >> frameTwo;
+	capOne >> frameOne;
+	capTwo >> frameTwo;
+	correctedPointsTogether.x = 0.0f;
+	correctedPointsTogether.y = 0.0f;
+
+	cameraX = 640.0f;
+	cameraY = 360.0f;
+	displayX = 140.0f;
+	displayY = 85.0f;
+	additionalX = -70.0f;
+	additionalY = 70.0f;
+
 
 	//int capOneWidth = frameOne.size[1];
 	//int capOneHeight = frameOne.size[0];
 	//int capTwoWidth = frameTwo.size[1];
 	//int capTwoHeight = frameTwo.size[0];
 
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("capOne: x = %f, y = %f"), capOneWidth, capOneHeight));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("capTwo: x = %f, y = %f"), capTwoWidth, capTwoHeight));
 
 
 }
@@ -86,14 +99,14 @@ void AFlowerBox::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	capOne.read(frameOne);
-	capTwo.read(frameTwo);
+
 
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Tick tock"));
 	//cv::imshow("camera", frameOne);
 
 
-
+	//capOne.read(frameOne);
+	//capTwo.read(frameTwo);
 
 	capOne >> frameOne;
 	capTwo >> frameTwo;
@@ -116,13 +129,18 @@ void AFlowerBox::Tick(float DeltaTime)
 	//correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
 
 
-	pointsTogether.x = touchPointTwo.x;
-	pointsTogether.y = touchPointOne.y;
+	pointsTogether.x = touchPointOne.x;
+	pointsTogether.y = touchPointTwo.y;
 
 	correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
 
+	//https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("coordinates: x = %f, y = %f"), correctedPointsTogether.x, correctedPointsTogether.y));
+	displayPointX = displayX - ((correctedPointsTogether.x * displayX) / cameraX) + additionalX;
+	displayPointY = displayY - ((correctedPointsTogether.y * displayY) / cameraY) + additionalY;
+	
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
 
 	
 
@@ -138,11 +156,12 @@ bool AFlowerBox::SpawnActor() {
 	if (true) {
 		FBoxSphereBounds BoxBounds = SpawnBox->CalcBounds(GetActorTransform());
 
-		FVector SpawnLocation = BoxBounds.Origin;
+		//FVector SpawnLocation = BoxBounds.Origin;
+		FVector SpawnLocation;
 		FRotator SpawnRotation = { 0, -90, 0 };
-		SpawnLocation.X += -BoxBounds.BoxExtent.X + 2 * BoxBounds.BoxExtent.X * FMath::FRand();
-		SpawnLocation.Y += -BoxBounds.BoxExtent.Y + 2 * BoxBounds.BoxExtent.Y * FMath::FRand();
-		SpawnLocation.Z += -BoxBounds.BoxExtent.Z + 2 * BoxBounds.BoxExtent.Z * FMath::FRand();
+		SpawnLocation.X += 75;
+		SpawnLocation.Y += displayPointX;
+		SpawnLocation.Z += displayPointY;
 
 		SpawnedActor = GetWorld()->SpawnActor<AActor>(FlowerToBeSpawned, SpawnLocation, SpawnRotation) != nullptr;
 

@@ -98,6 +98,9 @@ private:
 	cv::Point2f correctedPointOne, correctedPointTwo;
 	cv::Point2f pointsTogether, correctedPointsTogether;
 
+	float cameraX, cameraY, displayX, displayY;
+	float additionalX, additionalY, displayPointX, displayPointY;
+
 	//cv::Rect emptyScreen;
 
 	NoiseFilter* noiseFilterOne;

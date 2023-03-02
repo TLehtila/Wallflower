@@ -40,9 +40,9 @@ cv::Point2f& NoiseFilter::getResult() {
 
 cv::Point2f& NoiseFilter::updatePoint(cv::Point2f newPoint) {
     float distance = pointDistance(lastPoint, newPoint);
-    if (distance > pointMaxTolerance) {
-        historyHead = historySize = 0;
-    }
+    //if (distance > pointMaxTolerance) {
+    //    historyHead = historySize = 0;
+    //}
     history[historyHead] = newPoint;
     historyHead = (historyHead + 1) % maxHistory;
     if (historySize < maxHistory) {
