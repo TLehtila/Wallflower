@@ -82,6 +82,8 @@ private:
 
 	FTimerHandle SpawnTimerHandle;
 
+	std::vector<AActor*> flowers;
+
 	cv::VideoCapture capOne;
 	cv::VideoCapture capTwo;
 	cv::Mat frameOne;

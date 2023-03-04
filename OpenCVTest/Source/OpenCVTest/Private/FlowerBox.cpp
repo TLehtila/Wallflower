@@ -34,12 +34,7 @@ AFlowerBox::AFlowerBox()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true; 
-
-	//PrimaryActorTick.bStartWithTickEnabled = true;
-	//PrimaryActorTick.bAllowTickOnDedicatedServer = true;
 	bAllowTickBeforeBeginPlay = true;
-
-	//PrimaryActorTick.RegisterTickFunction(GetLevel());
 
 	SpawnBox = CreateDefaultSubobject<UBoxComponent>(TEXT("SpawnBox"));
 	RootComponent = SpawnBox;
@@ -133,21 +128,32 @@ void AFlowerBox::Tick(float DeltaTime)
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
 
-	TArray<AActor*> flowersToFind;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMyFlower::StaticClass(), flowersToFind);
+	auto i = std::begin(flowers);
+	int spot = 0;
 
-	for (AActor* flowerActor : flowersToFind) {
+	while (i != std::end(flowers)) {
 
-		AMyFlower* myFlowerCast = Cast<AMyFlower>(flowerActor);
-		if (myFlowerCast) {
-			FVector flowerLocation = myFlowerCast->GetActorLocation();
-			FRotator flowerRotation = myFlowerCast->GetActorRotation();
+		if (flowers[spot]!= nullptr) {
+			FVector flowerLocation = flowers[spot]->GetActorLocation();
+			//FRotator flowerRotation = flowers[spot]->GetActorRotation();
 
 			flowerLocation.Z += 1;
-			flowerRotation += {10, 0, 0};
+			//flowerRotation += {10, 0, 0};
+			//if (flowerRotation.Roll > 360) {
+			//	flowerRotation = { 0, -90, 0 };
+			//}
 		
-			myFlowerCast->SetActorLocation(flowerLocation);
-			myFlowerCast->SetActorRotation(flowerRotation);
+			flowers[spot]->SetActorLocation(flowerLocation);
+			//flowers[spot]->SetActorRotation(flowerRotation);
+
+			if (flowerLocation.Z > displayX + 50) {
+				flowers[spot]->Destroy();
+				flowers.erase(i);
+			}
+			else {
+				i++;
+				spot++;
+			}
 		}
 	}
 
@@ -164,7 +170,6 @@ bool AFlowerBox::SpawnActor() {
 	if (true) {
 		FBoxSphereBounds BoxBounds = SpawnBox->CalcBounds(GetActorTransform());
 
-		//FVector SpawnLocation = BoxBounds.Origin;
 		FVector SpawnLocation;
 		FRotator SpawnRotation = { 0, -90, 0 };
 		SpawnLocation.X += 75;
@@ -175,6 +180,7 @@ bool AFlowerBox::SpawnActor() {
 
 		if (SpawnedActor != nullptr) {
 			Success = true;
+			flowers.push_back(SpawnedActor);
 		}
 
 		if (Success) {
