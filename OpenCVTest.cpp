@@ -182,8 +182,8 @@ int main()
         pBackSubOne->apply(frameOne, fgMaskOne, -1.0);
         pBackSubTwo->apply(frameTwo, fgMaskTwo, -1.0);
 
-        Canny(fgMaskOne, cannyOne, 50, 150);
-        Canny(fgMaskTwo, cannyTwo, 50, 150);
+        //Canny(fgMaskOne, cannyOne, 50, 150);
+        //Canny(fgMaskTwo, cannyTwo, 50, 150);
 
 
         touchPointOne = getContours(fgMaskOne, contoursOne);
@@ -204,8 +204,8 @@ int main()
         //cout << correctedPointTwo.x << " " << correctedPointTwo.y << endl;
 
         imshow("point", pointScreen);
-        imshow("camera1", frameOne);
-        imshow("camera2", frameTwo);
+        imshow("camera1", fgMaskOne);
+        imshow("camera2", fgMaskTwo);
         
 
         

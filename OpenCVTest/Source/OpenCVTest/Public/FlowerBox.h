@@ -60,6 +60,8 @@ private:
 	void SpawnActorScheduled();
 
 	cv::Point2f getContours(cv::Mat img);
+	void processVideo();
+	void ScheduleVideoProcess();
 
 public:
 	//Actor class to spawn
@@ -80,7 +82,10 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* SpawnBox;
 
+	bool playing = false;
+
 	FTimerHandle SpawnTimerHandle;
+	FTimerHandle VideoTimerHandle;
 
 	std::vector<AActor*> flowers;
 

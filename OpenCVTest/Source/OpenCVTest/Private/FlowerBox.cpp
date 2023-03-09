@@ -49,6 +49,7 @@ void AFlowerBox::BeginPlay()
 
 	if (ShouldSpawn) {
 		ScheduleActorSpawn();
+		ScheduleVideoProcess();
 	}
 
 	capOne.open(0);
@@ -96,37 +97,9 @@ void AFlowerBox::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	capOne >> frameOne;
-	capTwo >> frameTwo;
-
-
-	//GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
-	//GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
-
-
-	pBackSubOne->apply(frameOne, fgMaskOne, -1.0);
-	pBackSubTwo->apply(frameTwo, fgMaskTwo, -1.0);
-
-	cv::Canny(fgMaskOne, cannyOne, 50, 150);
-	cv::Canny(fgMaskTwo, cannyTwo, 50, 150);
-
-
-	touchPointOne = getContours(fgMaskOne);
-	touchPointTwo = getContours(fgMaskTwo);
-	correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
-	correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
-
-	pointsTogether.x = correctedPointTwo.x;
-	pointsTogether.y = correctedPointOne.y;
-
-	correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
-
-	//https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
-
-	displayPointX = displayX - ((correctedPointsTogether.x * displayX) / cameraX) + additionalX;
-	displayPointY = displayY - ((correctedPointsTogether.y * displayY) / cameraY) + additionalY;
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
+	if (!playing) {
+		playing = true;
+	}
 
 	auto i = std::begin(flowers);
 	int spot = 0;
@@ -146,7 +119,7 @@ void AFlowerBox::Tick(float DeltaTime)
 			flowers[spot]->SetActorLocation(flowerLocation);
 			//flowers[spot]->SetActorRotation(flowerRotation);
 
-			if (flowerLocation.Z > displayX + 50) {
+			if (flowerLocation.Z > displayX + 10) {
 				flowers[spot]->Destroy();
 				flowers.erase(i);
 			}
@@ -173,8 +146,8 @@ bool AFlowerBox::SpawnActor() {
 		FVector SpawnLocation;
 		FRotator SpawnRotation = { 0, -90, 0 };
 		SpawnLocation.X += 75;
-		SpawnLocation.Y += displayPointX;
-		SpawnLocation.Z += displayPointY;
+		SpawnLocation.Y += displayPointY;
+		SpawnLocation.Z += displayPointX;
 
 		SpawnedActor = GetWorld()->SpawnActor<AActor>(FlowerToBeSpawned, SpawnLocation, SpawnRotation);
 
@@ -185,7 +158,7 @@ bool AFlowerBox::SpawnActor() {
 
 		if (Success) {
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Spawned"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Spawned"));
 		}
 	}
 
@@ -210,6 +183,49 @@ void AFlowerBox::SpawnActorScheduled() {
 	}
 }
 
+void AFlowerBox::ScheduleVideoProcess() {
+	float DeltaToNextProcess = 0.1;
+
+	GetWorld()->GetTimerManager().SetTimer(VideoTimerHandle, this, &AFlowerBox::processVideo, DeltaToNextProcess, false);
+}
+
+void AFlowerBox::processVideo() {
+	if(playing) {
+		capOne >> frameOne;
+		capTwo >> frameTwo;
+
+
+		//GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
+		//GaussianBlur(frameTwo, frameBlurTwo, Size(9, 9), 5, 0);
+
+
+		pBackSubOne->apply(frameOne, fgMaskOne, -1.0);
+		pBackSubTwo->apply(frameTwo, fgMaskTwo, -1.0);
+
+		//cv::Canny(fgMaskOne, cannyOne, 50, 150);
+		//cv::Canny(fgMaskTwo, cannyTwo, 50, 150);
+
+
+		touchPointOne = getContours(fgMaskOne);
+		touchPointTwo = getContours(fgMaskTwo);
+		correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
+		correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
+
+		pointsTogether.x = correctedPointTwo.x;
+		pointsTogether.y = correctedPointOne.y;
+
+		correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
+
+		//https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
+
+		displayPointX = displayX - ((correctedPointsTogether.x * displayX) / cameraX) + additionalX;
+		displayPointY = (correctedPointsTogether.y * displayY) / cameraY + additionalY;
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
+		ScheduleVideoProcess();
+	}
+
+}
 
 
 cv::Point2f AFlowerBox::getContours(cv::Mat img) {
