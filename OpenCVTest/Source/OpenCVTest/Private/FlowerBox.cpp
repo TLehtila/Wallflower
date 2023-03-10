@@ -110,7 +110,8 @@ void AFlowerBox::Tick(float DeltaTime)
 			FVector flowerLocation = flowers[spot]->GetActorLocation();
 			//FRotator flowerRotation = flowers[spot]->GetActorRotation();
 
-			flowerLocation.Z += 1;
+			flowerLocation.Z += 0.1;
+			flowerLocation.X += 0.1;
 			//flowerRotation += {10, 0, 0};
 			//if (flowerRotation.Roll > 360) {
 			//	flowerRotation = { 0, -90, 0 };
@@ -119,7 +120,7 @@ void AFlowerBox::Tick(float DeltaTime)
 			flowers[spot]->SetActorLocation(flowerLocation);
 			//flowers[spot]->SetActorRotation(flowerRotation);
 
-			if (flowerLocation.Z > displayX + 10) {
+			if (flowerLocation.Z > displayX + 150) {
 				flowers[spot]->Destroy();
 				flowers.erase(i);
 			}
@@ -146,9 +147,10 @@ bool AFlowerBox::SpawnActor() {
 		FVector SpawnLocation;
 		FRotator SpawnRotation = { 0, -90, 0 };
 		SpawnLocation.X += 75;
-		SpawnLocation.Y += displayPointY;
-		SpawnLocation.Z += displayPointX;
+		SpawnLocation.Y += displayPointX;
+		SpawnLocation.Z += displayPointY;
 
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointY, displayPointX));
 		SpawnedActor = GetWorld()->SpawnActor<AActor>(FlowerToBeSpawned, SpawnLocation, SpawnRotation);
 
 		if (SpawnedActor != nullptr) {
@@ -191,8 +193,8 @@ void AFlowerBox::ScheduleVideoProcess() {
 
 void AFlowerBox::processVideo() {
 	if(playing) {
-		capOne >> frameOne;
-		capTwo >> frameTwo;
+		capOne >> frameTwo;
+		capTwo >> frameOne;
 
 
 		//GaussianBlur(frameOne, frameBlurOne, Size(9, 9), 5, 0);
@@ -218,8 +220,8 @@ void AFlowerBox::processVideo() {
 
 		//https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
 
-		displayPointX = displayX - ((correctedPointsTogether.x * displayX) / cameraX) + additionalX;
-		displayPointY = (correctedPointsTogether.y * displayY) / cameraY + additionalY;
+		displayPointX = (correctedPointsTogether.x * displayX) / cameraX + additionalX;
+		displayPointY = displayY - ((correctedPointsTogether.y * displayY) / cameraY) + additionalY;
 
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
 		ScheduleVideoProcess();
