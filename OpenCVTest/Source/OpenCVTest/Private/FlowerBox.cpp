@@ -145,7 +145,7 @@ bool AFlowerBox::SpawnActor() {
 		FBoxSphereBounds BoxBounds = SpawnBox->CalcBounds(GetActorTransform());
 
 		FVector SpawnLocation;
-		FRotator SpawnRotation = { 0, -90, 0 };
+		FRotator SpawnRotation = { 90, 0, 0 };
 		SpawnLocation.X += 75;
 		SpawnLocation.Y += displayPointX;
 		SpawnLocation.Z += displayPointY;

@@ -28,7 +28,10 @@ public:
 
 private:
 
+	//UPROPERTY(EditAnywhere)
+	//UStaticMeshComponent* StaticMesh;
+
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* StaticMesh;
+	USkeletalMeshComponent* SkeletalMesh;
 
 };

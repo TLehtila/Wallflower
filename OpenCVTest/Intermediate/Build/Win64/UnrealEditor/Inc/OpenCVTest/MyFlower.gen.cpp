@@ -13,7 +13,7 @@ void EmptyLinkFunctionForGeneratedCodeMyFlower() {}
 	OPENCVTEST_API UClass* Z_Construct_UClass_AMyFlower();
 	ENGINE_API UClass* Z_Construct_UClass_AActor();
 	UPackage* Z_Construct_UPackage__Script_OpenCVTest();
-	ENGINE_API UClass* Z_Construct_UClass_UStaticMeshComponent_NoRegister();
+	ENGINE_API UClass* Z_Construct_UClass_USkeletalMeshComponent_NoRegister();
 // End Cross Module References
 	DEFINE_FUNCTION(AMyFlower::execSpawnActor)
 	{
@@ -80,9 +80,9 @@ void EmptyLinkFunctionForGeneratedCodeMyFlower() {}
 		static const UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
 #if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_StaticMesh_MetaData[];
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_SkeletalMesh_MetaData[];
 #endif
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_StaticMesh;
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_SkeletalMesh;
 		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 		static const FCppClassTypeInfoStatic StaticCppClassTypeInfo;
 		static const UECodeGen_Private::FClassParams ClassParams;
@@ -101,15 +101,17 @@ void EmptyLinkFunctionForGeneratedCodeMyFlower() {}
 	};
 #endif
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AMyFlower_Statics::NewProp_StaticMesh_MetaData[] = {
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AMyFlower_Statics::NewProp_SkeletalMesh_MetaData[] = {
 		{ "Category", "MyFlower" },
+		{ "Comment", "//UPROPERTY(EditAnywhere)\n//UStaticMeshComponent* StaticMesh;\n" },
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/MyFlower.h" },
+		{ "ToolTip", "UPROPERTY(EditAnywhere)\nUStaticMeshComponent* StaticMesh;" },
 	};
 #endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AMyFlower_Statics::NewProp_StaticMesh = { "StaticMesh", nullptr, (EPropertyFlags)0x0040000000080009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AMyFlower, StaticMesh), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(Z_Construct_UClass_AMyFlower_Statics::NewProp_StaticMesh_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AMyFlower_Statics::NewProp_StaticMesh_MetaData)) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AMyFlower_Statics::NewProp_SkeletalMesh = { "SkeletalMesh", nullptr, (EPropertyFlags)0x0040000000080009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AMyFlower, SkeletalMesh), Z_Construct_UClass_USkeletalMeshComponent_NoRegister, METADATA_PARAMS(Z_Construct_UClass_AMyFlower_Statics::NewProp_SkeletalMesh_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AMyFlower_Statics::NewProp_SkeletalMesh_MetaData)) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AMyFlower_Statics::PropPointers[] = {
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMyFlower_Statics::NewProp_StaticMesh,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMyFlower_Statics::NewProp_SkeletalMesh,
 	};
 	const FCppClassTypeInfoStatic Z_Construct_UClass_AMyFlower_Statics::StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<AMyFlower>::IsAbstract,
@@ -147,9 +149,9 @@ void EmptyLinkFunctionForGeneratedCodeMyFlower() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_MyFlower_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_AMyFlower, AMyFlower::StaticClass, TEXT("AMyFlower"), &Z_Registration_Info_UClass_AMyFlower, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AMyFlower), 1413146956U) },
+		{ Z_Construct_UClass_AMyFlower, AMyFlower::StaticClass, TEXT("AMyFlower"), &Z_Registration_Info_UClass_AMyFlower, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AMyFlower), 3443651233U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_MyFlower_h_862276913(TEXT("/Script/OpenCVTest"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_MyFlower_h_3088816536(TEXT("/Script/OpenCVTest"),
 		Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_MyFlower_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_MyFlower_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
