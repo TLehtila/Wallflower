@@ -29,6 +29,8 @@
 #include "NoiseFilter.h"
 
 
+
+//https://www.gdcvault.com/play/1026366/Automated-Testing-of-Gameplay-Features
 // Sets default values
 AFlowerBox::AFlowerBox()
 {
@@ -223,7 +225,7 @@ void AFlowerBox::processVideo() {
 		displayPointX = (correctedPointsTogether.x * displayX) / cameraX + additionalX;
 		displayPointY = displayY - ((correctedPointsTogether.y * displayY) / cameraY) + additionalY;
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
 		ScheduleVideoProcess();
 	}
 
