@@ -29,6 +29,7 @@
 
 #include "NoiseFilter.h"
 #include "MyFlower.h"
+#include "MyNotifyClass.h"
 
 
 #include "FlowerBox.generated.h"
@@ -52,6 +53,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool SpawnActor();
 
+
+	UFUNCTION(BlueprintCallable)
+	bool SpawnNotify();
+
 	void ScheduleActorSpawn();
 	virtual void Tick(float DeltaTime) override;
 
@@ -62,11 +67,18 @@ private:
 	cv::Point2f getContours(cv::Mat img);
 	void processVideo();
 	void ScheduleVideoProcess();
+	void checkMovement(float oldX, float oldY);
+	void despawnNotify();
+	void ScheduleDespawnNotify();
 
 public:
 	//Actor class to spawn
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
 	TSubclassOf<AActor> FlowerToBeSpawned;
+
+
+	UPROPERTY(EditAnywhere, BluePrintReadWrite)
+	TSubclassOf<AActor> NotifyToBeSpawned;
 
 	UPROPERTY(EditAnywhere, BluePrintReadWrite)
 	bool ShouldSpawn = true;
@@ -84,11 +96,14 @@ private:
 
 	bool playing = false;
 
+	AMyNotifyClass* SpawnedNotify;
+
 	FTimerHandle SpawnTimerHandle;
 	FTimerHandle VideoTimerHandle;
+	FTimerHandle NotifyTimerHandle;
 
 	std::vector<AActor*> flowers;
-
+	
 	cv::VideoCapture capOne;
 	cv::VideoCapture capTwo;
 	cv::Mat frameOne;
@@ -110,6 +125,8 @@ private:
 
 	float cameraX, cameraY, displayX, displayY;
 	float additionalX, additionalY, displayPointX, displayPointY;
+	float historicX, historicY;
+	int historyCounter;
 
 	//cv::Rect emptyScreen;
 

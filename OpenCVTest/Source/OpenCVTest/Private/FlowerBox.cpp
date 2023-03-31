@@ -83,6 +83,11 @@ void AFlowerBox::BeginPlay()
 	additionalX = -70.0f;
 	additionalY = 70.0f;
 
+	historicX = 0.0f;
+	historicY = 0.0f;
+	historyCounter = 0;
+
+
 
 	//int capOneWidth = frameOne.size[1];
 	//int capOneHeight = frameOne.size[0];
@@ -152,7 +157,7 @@ bool AFlowerBox::SpawnActor() {
 		SpawnLocation.Y += displayPointX;
 		SpawnLocation.Z += displayPointY;
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointY, displayPointX));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointY, displayPointX));
 		SpawnedActor = GetWorld()->SpawnActor<AActor>(FlowerToBeSpawned, SpawnLocation, SpawnRotation);
 
 		if (SpawnedActor != nullptr) {
@@ -225,10 +230,81 @@ void AFlowerBox::processVideo() {
 		displayPointX = (correctedPointsTogether.x * displayX) / cameraX + additionalX;
 		displayPointY = displayY - ((correctedPointsTogether.y * displayY) / cameraY) + additionalY;
 
+		checkMovement(correctedPointsTogether.x, correctedPointsTogether.y);
+
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawn coordinates: x = %f, y = %f"), displayPointX, displayPointY));
 		ScheduleVideoProcess();
 	}
 
+}
+
+void AFlowerBox::checkMovement(float oldX, float oldY) {
+	float xDistance = oldX - historicX;
+	float yDistance = oldY - historicY;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("old coordinates: x = %f, y = %f"), oldX, oldY));
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("historic coordinates: x = %f, y = %f"), historicX, historicY));
+	if (xDistance + yDistance < 5.0f) {
+		historyCounter++;
+	}
+	else {
+		historyCounter = 0;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("history reset")));
+		if (SpawnedNotify != nullptr) {
+			ShouldSpawn = true;
+			ScheduleActorSpawn();
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("trying to start despawning notify")));
+			SpawnedNotify->StartTheEnd(EEndPlayReason::RemovedFromWorld);
+			ScheduleDespawnNotify();
+		}
+	}
+
+	if (historyCounter == 50 && SpawnedNotify == nullptr) {
+		ShouldSpawn = false;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawning notify")));
+		SpawnNotify();
+	}
+	historicX = oldX;
+	historicY = oldY;
+}
+
+void AFlowerBox::ScheduleDespawnNotify() {
+	float DeltaToNextProcess = 1.0;
+
+	GetWorld()->GetTimerManager().SetTimer(NotifyTimerHandle, this, &AFlowerBox::despawnNotify, DeltaToNextProcess, false);
+}
+
+void AFlowerBox::despawnNotify() {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("despawning notify")));
+	SpawnedNotify->Destroy();
+	SpawnedNotify = nullptr;
+}
+
+bool AFlowerBox::SpawnNotify() {
+	bool Success = false;
+	if (true) {
+		FBoxSphereBounds BoxBounds = SpawnBox->CalcBounds(GetActorTransform());
+
+		FVector SpawnLocation;
+		FRotator SpawnRotation = { 0, 90, 90};
+		SpawnLocation.X += 360;
+		SpawnLocation.Y += 0;
+		SpawnLocation.Z += 125;
+
+		SpawnedNotify = GetWorld()->SpawnActor<AMyNotifyClass>(NotifyToBeSpawned, SpawnLocation, SpawnRotation);
+
+		if (SpawnedNotify != nullptr) {
+			Success = true;
+		}
+
+		if (Success) {
+
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Spawned"));
+		}
+	}
+
+	return Success;
 }
 
 

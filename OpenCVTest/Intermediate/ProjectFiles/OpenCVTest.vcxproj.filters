@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <None Include="..\..\OpenCVTest.uproject" />
     <Filter Include="Source">
@@ -71,7 +71,13 @@
     <ClCompile Include="..\..\Source\OpenCVTest\Private\MyGameModeBase.cpp">
       <Filter>Source\OpenCVTest\Private</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\OpenCVTest\Private\MyNotifyClass.cpp">
+      <Filter>Source\OpenCVTest\Private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\OpenCVTest\Private\MyPlayerController.cpp">
+      <Filter>Source\OpenCVTest\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\OpenCVTest\Private\NoiseFilter.cpp">
       <Filter>Source\OpenCVTest\Private</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\OpenCVTest\Private\Tutorial_character.cpp">
@@ -89,20 +95,16 @@
     <ClInclude Include="..\..\Source\OpenCVTest\Public\MyGameModeBase.h">
       <Filter>Source\OpenCVTest\Public</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\OpenCVTest\Public\MyNotifyClass.h">
+      <Filter>Source\OpenCVTest\Public</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\OpenCVTest\Public\MyPlayerController.h">
       <Filter>Source\OpenCVTest\Public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\OpenCVTest\Public\Tutorial_character.h">
+    <ClInclude Include="..\..\Source\OpenCVTest\Public\NoiseFilter.h">
       <Filter>Source\OpenCVTest\Public</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Source\OpenCVTest\Private\NoiseFilter.cpp">
-      <Filter>Source\OpenCVTest\Private</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\Source\OpenCVTest\Public\NoiseFilter.h">
+    <ClInclude Include="..\..\Source\OpenCVTest\Public\Tutorial_character.h">
       <Filter>Source\OpenCVTest\Public</Filter>
     </ClInclude>
   </ItemGroup>

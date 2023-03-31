@@ -27,10 +27,6 @@ public:
 	bool SpawnActor();
 
 private:
-
-	//UPROPERTY(EditAnywhere)
-	//UStaticMeshComponent* StaticMesh;
-
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshComponent* SkeletalMesh;
 

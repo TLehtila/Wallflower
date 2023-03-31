@@ -24,6 +24,13 @@ void EmptyLinkFunctionForGeneratedCodeFlowerBox() {}
 		P_THIS->SpawnActorScheduled();
 		P_NATIVE_END;
 	}
+	DEFINE_FUNCTION(AFlowerBox::execSpawnNotify)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		*(bool*)Z_Param__Result=P_THIS->SpawnNotify();
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(AFlowerBox::execSpawnActor)
 	{
 		P_FINISH;
@@ -37,6 +44,7 @@ void EmptyLinkFunctionForGeneratedCodeFlowerBox() {}
 		static const FNameNativePtrPair Funcs[] = {
 			{ "SpawnActor", &AFlowerBox::execSpawnActor },
 			{ "SpawnActorScheduled", &AFlowerBox::execSpawnActorScheduled },
+			{ "SpawnNotify", &AFlowerBox::execSpawnNotify },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 	}
@@ -99,6 +107,43 @@ void EmptyLinkFunctionForGeneratedCodeFlowerBox() {}
 		}
 		return ReturnFunction;
 	}
+	struct Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics
+	{
+		struct FlowerBox_eventSpawnNotify_Parms
+		{
+			bool ReturnValue;
+		};
+		static void NewProp_ReturnValue_SetBit(void* Obj);
+		static const UECodeGen_Private::FBoolPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	void Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::NewProp_ReturnValue_SetBit(void* Obj)
+	{
+		((FlowerBox_eventSpawnNotify_Parms*)Obj)->ReturnValue = 1;
+	}
+	const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(FlowerBox_eventSpawnNotify_Parms), &Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::NewProp_ReturnValue_SetBit, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/FlowerBox.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AFlowerBox, nullptr, "SpawnNotify", nullptr, nullptr, sizeof(Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::FlowerBox_eventSpawnNotify_Parms), Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_AFlowerBox_SpawnNotify()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AFlowerBox_SpawnNotify_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
 	IMPLEMENT_CLASS_NO_AUTO_REGISTRATION(AFlowerBox);
 	UClass* Z_Construct_UClass_AFlowerBox_NoRegister()
 	{
@@ -115,6 +160,10 @@ void EmptyLinkFunctionForGeneratedCodeFlowerBox() {}
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_FlowerToBeSpawned_MetaData[];
 #endif
 		static const UECodeGen_Private::FClassPropertyParams NewProp_FlowerToBeSpawned;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_NotifyToBeSpawned_MetaData[];
+#endif
+		static const UECodeGen_Private::FClassPropertyParams NewProp_NotifyToBeSpawned;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_ShouldSpawn_MetaData[];
 #endif
@@ -143,6 +192,7 @@ void EmptyLinkFunctionForGeneratedCodeFlowerBox() {}
 	const FClassFunctionLinkInfo Z_Construct_UClass_AFlowerBox_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_AFlowerBox_SpawnActor, "SpawnActor" }, // 1959964404
 		{ &Z_Construct_UFunction_AFlowerBox_SpawnActorScheduled, "SpawnActorScheduled" }, // 2366128560
+		{ &Z_Construct_UFunction_AFlowerBox_SpawnNotify, "SpawnNotify" }, // 417122157
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AFlowerBox_Statics::Class_MetaDataParams[] = {
@@ -159,6 +209,13 @@ void EmptyLinkFunctionForGeneratedCodeFlowerBox() {}
 	};
 #endif
 	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AFlowerBox_Statics::NewProp_FlowerToBeSpawned = { "FlowerToBeSpawned", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AFlowerBox, FlowerToBeSpawned), Z_Construct_UClass_AActor_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(Z_Construct_UClass_AFlowerBox_Statics::NewProp_FlowerToBeSpawned_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AFlowerBox_Statics::NewProp_FlowerToBeSpawned_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AFlowerBox_Statics::NewProp_NotifyToBeSpawned_MetaData[] = {
+		{ "Category", "FlowerBox" },
+		{ "ModuleRelativePath", "Public/FlowerBox.h" },
+	};
+#endif
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AFlowerBox_Statics::NewProp_NotifyToBeSpawned = { "NotifyToBeSpawned", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AFlowerBox, NotifyToBeSpawned), Z_Construct_UClass_AActor_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(Z_Construct_UClass_AFlowerBox_Statics::NewProp_NotifyToBeSpawned_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AFlowerBox_Statics::NewProp_NotifyToBeSpawned_MetaData)) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AFlowerBox_Statics::NewProp_ShouldSpawn_MetaData[] = {
 		{ "Category", "FlowerBox" },
@@ -196,6 +253,7 @@ void EmptyLinkFunctionForGeneratedCodeFlowerBox() {}
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AFlowerBox_Statics::NewProp_SpawnBox = { "SpawnBox", nullptr, (EPropertyFlags)0x0040000000090009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AFlowerBox, SpawnBox), Z_Construct_UClass_UBoxComponent_NoRegister, METADATA_PARAMS(Z_Construct_UClass_AFlowerBox_Statics::NewProp_SpawnBox_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AFlowerBox_Statics::NewProp_SpawnBox_MetaData)) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AFlowerBox_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFlowerBox_Statics::NewProp_FlowerToBeSpawned,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFlowerBox_Statics::NewProp_NotifyToBeSpawned,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFlowerBox_Statics::NewProp_ShouldSpawn,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFlowerBox_Statics::NewProp_SpawnTime,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AFlowerBox_Statics::NewProp_RandomTime,
@@ -237,9 +295,9 @@ void EmptyLinkFunctionForGeneratedCodeFlowerBox() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_FlowerBox_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_AFlowerBox, AFlowerBox::StaticClass, TEXT("AFlowerBox"), &Z_Registration_Info_UClass_AFlowerBox, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AFlowerBox), 2126057753U) },
+		{ Z_Construct_UClass_AFlowerBox, AFlowerBox::StaticClass, TEXT("AFlowerBox"), &Z_Registration_Info_UClass_AFlowerBox, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AFlowerBox), 3677358875U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_FlowerBox_h_1830411200(TEXT("/Script/OpenCVTest"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_FlowerBox_h_2169287202(TEXT("/Script/OpenCVTest"),
 		Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_FlowerBox_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_OpenCVTest_Source_OpenCVTest_Public_FlowerBox_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
