@@ -270,7 +270,7 @@ void AFlowerBox::checkMovement(float oldX, float oldY) {
 }
 
 void AFlowerBox::ScheduleDespawnNotify() {
-	float DeltaToNextProcess = 1.0;
+	float DeltaToNextProcess = 0.1;
 
 	GetWorld()->GetTimerManager().SetTimer(NotifyTimerHandle, this, &AFlowerBox::despawnNotify, DeltaToNextProcess, false);
 }

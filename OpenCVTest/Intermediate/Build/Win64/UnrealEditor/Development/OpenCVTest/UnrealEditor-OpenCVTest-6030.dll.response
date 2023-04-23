@@ -86,7 +86,7 @@
 "setupapi.lib"
 "dwmapi.lib"
 "imm32.lib"
-/OUT:"F:\SchoolStuff\Wallflower\OpenCVTest\Binaries\Win64\UnrealEditor-OpenCVTest.dll"
-/IMPLIB:"F:\SchoolStuff\Wallflower\OpenCVTest\Intermediate\Build\Win64\UnrealEditor\Development\OpenCVTest\UnrealEditor-OpenCVTest.suppressed.lib"
-/PDB:"F:\SchoolStuff\Wallflower\OpenCVTest\Binaries\Win64\UnrealEditor-OpenCVTest.pdb"
+/OUT:"F:\SchoolStuff\Wallflower\OpenCVTest\Binaries\Win64\UnrealEditor-OpenCVTest-6030.dll"
+/IMPLIB:"F:\SchoolStuff\Wallflower\OpenCVTest\Intermediate\Build\Win64\UnrealEditor\Development\OpenCVTest\UnrealEditor-OpenCVTest-6030.suppressed.lib"
+/PDB:"F:\SchoolStuff\Wallflower\OpenCVTest\Binaries\Win64\UnrealEditor-OpenCVTest-6030.pdb"
 /ignore:4078
