@@ -117,8 +117,8 @@ void AFlowerBox::Tick(float DeltaTime)
 			FVector flowerLocation = flowers[spot]->GetActorLocation();
 			//FRotator flowerRotation = flowers[spot]->GetActorRotation();
 
-			flowerLocation.Z += 0.1;
-			flowerLocation.X += 0.1;
+			flowerLocation.Z += 0.2;
+			flowerLocation.X += 0.2;
 			//flowerRotation += {10, 0, 0};
 			//if (flowerRotation.Roll > 360) {
 			//	flowerRotation = { 0, -90, 0 };
@@ -222,6 +222,9 @@ void AFlowerBox::processVideo() {
 
 		pointsTogether.x = correctedPointTwo.x;
 		pointsTogether.y = correctedPointOne.y;
+
+		//pointsTogether.x = touchPointTwo.x;
+		//pointsTogether.y = touchPointOne.y;
 
 		correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
 
@@ -329,7 +332,9 @@ cv::Point2f AFlowerBox::getContours(cv::Mat img) {
 
 			boundRectangle[i] = cv::boundingRect(contourPoly[i]);
 			//rectangle(imgResult, boundRectangle[i].tl(), boundRectangle[i].br(), cv::Scalar(255, 255, 255), 5);
-			coordinates = boundRectangle[i].br();
+			//coordinates = boundRectangle[i].br();
+			coordinates.x = boundRectangle[i].tl().x + ((boundRectangle[i].br().x - boundRectangle[i].tl().x) / 2);
+			coordinates.y = boundRectangle[i].tl().y + ((boundRectangle[i].br().y - boundRectangle[i].tl().y) / 2);
 
 		}
 	}

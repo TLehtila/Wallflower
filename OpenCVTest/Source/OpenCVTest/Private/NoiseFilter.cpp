@@ -13,6 +13,7 @@
 #include <ThirdParty/OpenCV/include/opencv2/core.hpp>
 #include "PostOpenCVHeaders.h"
 
+// adapted from https://stackoverflow.com/a/50047253
 NoiseFilter::NoiseFilter(float maxTolerance )
 {
     historyHead = historySize = 0;

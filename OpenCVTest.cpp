@@ -33,7 +33,8 @@ cv::Point2f getContours(cv::Mat img, cv::Mat imgResult) {
 
             boundRectangle[i] = cv::boundingRect(contourPoly[i]);
             rectangle(imgResult, boundRectangle[i].tl(), boundRectangle[i].br(), cv::Scalar(255, 255, 255), 5);
-            coordinates = boundRectangle[i].br();
+            coordinates.x = boundRectangle[i].tl().x + ((boundRectangle[i].br().x  - boundRectangle[i].tl().x) / 2);
+            coordinates.y = boundRectangle[i].tl().y + ((boundRectangle[i].br().y - boundRectangle[i].tl().y) / 2);
 
         }
     }
@@ -122,6 +123,7 @@ int main()
     cv::Ptr<cv::BackgroundSubtractor> pBackSubTwo;
     pBackSubTwo = cv::createBackgroundSubtractorMOG2();
 
+
     //Point2f sourcePointsOne[4] = { {130, 95}, {640, 0}, {60, 435}, {640, 480} };
     //Point2f sourcePointsTwo[4] = { {30, 90}, {625, 80}, {0, 360}, {640, 360} };
     //Point2f destPointsOne[4] = { {0.0f, 0.0f}, {640, 0.0f}, {0.0f, 480}, {640, 480} };
@@ -188,12 +190,15 @@ int main()
 
         touchPointOne = getContours(fgMaskOne, contoursOne);
         touchPointTwo = getContours(fgMaskTwo, contoursTwo);
-        correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
-        correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
+        //correctedPointOne = noiseFilterOne->updatePoint(touchPointOne);
+        //correctedPointTwo = noiseFilterTwo->updatePoint(touchPointTwo);
 
 
-        pointsTogether.x = correctedPointTwo.x;
-        pointsTogether.y = correctedPointOne.y;
+        //pointsTogether.x = correctedPointTwo.x;
+        //pointsTogether.y = correctedPointOne.y;
+
+        pointsTogether.x = touchPointTwo.x;
+        pointsTogether.y = touchPointOne.y;
 
         correctedPointsTogether = noiseFilterFinal->updatePoint(pointsTogether);
 
