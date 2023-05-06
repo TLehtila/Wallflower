@@ -263,7 +263,7 @@ void AFlowerBox::checkMovement(float oldX, float oldY) {
 		}
 	}
 
-	if (historyCounter == 50 && SpawnedNotify == nullptr) {
+	if (historyCounter == 25 && SpawnedNotify == nullptr) {
 		ShouldSpawn = false;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("spawning notify")));
 		SpawnNotify();
