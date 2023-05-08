@@ -21,3 +21,6 @@ Download the released version called First Wallflower on the right. Extract it, 
 
 A video containing more information can be found here
 [![A video containing more information can be found here](https://img.youtube.com/vi/NB6KwNcECvs/maxresdefault.jpg)](https://www.youtube.com/watch?v=NB6KwNcECvs)
+
+
+The repository contains the solution file for the test console application, and a folder called OpenCVTest, which contains the Unreal Engine project.
