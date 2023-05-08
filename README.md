@@ -19,4 +19,5 @@ https://user-images.githubusercontent.com/72321149/236935531-4d6ae739-0c9a-45cd-
 Download the released version called First Wallflower on the right. Extract it, make sure you have two cameras connected to the computer and placed appropriately, and run the Wallflower.exe
 
 
+A video containing more information can be found here
 [![A video containing more information can be found here](https://img.youtube.com/vi/NB6KwNcECvs/maxresdefault.jpg)](https://www.youtube.com/watch?v=NB6KwNcECvs)
